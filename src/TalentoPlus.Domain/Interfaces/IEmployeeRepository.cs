@@ -77,4 +77,5 @@ public interface IEmployeeRepository : IRepository<Employee>
     /// Elimina TODOS los empleados, cargos y departamentos (Solo para pruebas)
     /// </summary>
     Task DeleteAllAsync();
+
 }

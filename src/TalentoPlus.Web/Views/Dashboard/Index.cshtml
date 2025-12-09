@@ -115,18 +115,38 @@
         </div>
     </div>
     
-    <!-- AI Section Placeholder (US-09) -->
+    <!-- AI Section (US-09) -->
     <div class="row">
         <div class="col-12">
-            <div class="card shadow-sm border-0 bg-gradient-primary-to-secondary text-white" style="background: linear-gradient(45deg, #4e73df, #224abe);">
-                <div class="card-body p-5">
+            <div class="card shadow-sm border-0 bg-gradient-primary-to-secondary" style="background: linear-gradient(45deg, #4e73df, #224abe);">
+                <div class="card-body p-4">
                     <div class="row align-items-center">
-                        <div class="col-md-8">
-                            <h2 class="fw-bold mb-3"><i class="fas fa-robot me-2"></i>Asistente IA TalentoPlus</h2>
-                            <p class="lead mb-0">Próximamente: Haz preguntas en lenguaje natural sobre tus datos y obtén respuestas instantáneas.</p>
+                        <div class="col-md-7 text-white">
+                            <h3 class="fw-bold mb-2"><i class="fas fa-robot me-2"></i>Asistente IA TalentoPlus</h3>
+                            <p class="mb-4 text-white-50">Pregunta sobre tus datos en lenguaje natural. Ej: "¿Cuántos empleados hay en Sistemas?", "¿Cuál es el salario promedio?".</p>
+                            
+                            <div class="input-group mb-3">
+                                <input type="text" id="aiQuestion" class="form-control form-control-lg border-0" placeholder="Escribe tu pregunta aquí..." aria-label="Pregunta IA">
+                                <button class="btn btn-light text-primary fw-bold px-4" type="button" id="btnAskAI">
+                                    <i class="fas fa-paper-plane me-2"></i>Preguntar
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-md-4 text-center">
-                            <i class="fas fa-brain fa-6x text-white-50"></i>
+                        <div class="col-md-5">
+                            <div class="card border-0 shadow-lg" style="min-height: 200px; background-color: rgba(255, 255, 255, 0.95);">
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-primary mb-3">Respuesta:</h6>
+                                    <div id="aiResponse" class="text-gray-800">
+                                        <p class="text-muted fst-italic small">La respuesta aparecerá aquí...</p>
+                                    </div>
+                                    <div id="aiLoading" class="text-center d-none py-3">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
+                                        </div>
+                                        <p class="small text-muted mt-2">Analizando datos...</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -138,7 +158,48 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Configuración común
+        // Lógica del Chat IA
+        document.getElementById('btnAskAI').addEventListener('click', askAI);
+        document.getElementById('aiQuestion').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') askAI();
+        });
+
+        function askAI() {
+            var question = document.getElementById('aiQuestion').value;
+            if (!question.trim()) return;
+
+            var responseDiv = document.getElementById('aiResponse');
+            var loadingDiv = document.getElementById('aiLoading');
+            
+            responseDiv.classList.add('d-none');
+            loadingDiv.classList.remove('d-none');
+
+            fetch('/Dashboard/AskAI', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question: question })
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadingDiv.classList.add('d-none');
+                responseDiv.classList.remove('d-none');
+                
+                if (data.success) {
+                    responseDiv.innerHTML = `<p class="lead mb-0">${data.answer}</p>`;
+                } else {
+                    responseDiv.innerHTML = `<p class="text-danger">${data.answer}</p>`;
+                }
+            })
+            .catch(error => {
+                loadingDiv.classList.add('d-none');
+                responseDiv.classList.remove('d-none');
+                responseDiv.innerHTML = `<p class="text-danger">Error de conexión: ${error}</p>`;
+            });
+        }
+
+        // Configuración Chart.js (existente)
         Chart.defaults.font.family = 'Nunito, -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
         Chart.defaults.color = '#858796';
 

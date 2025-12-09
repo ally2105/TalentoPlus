@@ -9,11 +9,13 @@ public class EmployeeService : IEmployeeService
 {
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IDepartmentRepository _departmentRepository;
+    private readonly IEmailService _emailService;
 
-    public EmployeeService(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository)
+    public EmployeeService(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository, IEmailService emailService)
     {
         _employeeRepository = employeeRepository;
         _departmentRepository = departmentRepository;
+        _emailService = emailService;
     }
 
     public async Task<IEnumerable<EmployeeListDto>> GetAllAsync()
@@ -241,5 +243,51 @@ public class EmployeeService : IEmployeeService
         stats.InactiveEmployees = stats.TotalEmployees - stats.ActiveEmployees;
 
         return stats;
+    }
+
+    public async Task RegisterAsync(TalentoPlus.Application.DTOs.Auth.EmployeeRegisterRequest request)
+    {
+        // Validaciones
+        if (await _employeeRepository.DocumentNumberExistsAsync(request.DocumentNumber))
+            throw new InvalidOperationException($"Ya existe un empleado con el documento {request.DocumentNumber}");
+
+        if (await _employeeRepository.EmailExistsAsync(request.Email))
+            throw new InvalidOperationException($"Ya existe un empleado con el email {request.Email}");
+
+        // Crear entidad
+        var employee = new Employee
+        {
+            DocumentNumber = request.DocumentNumber,
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            PersonalEmail = request.Email,
+            DepartmentId = request.DepartmentId,
+            JobPositionId = request.JobPositionId,
+            HireDate = DateTime.UtcNow,
+            IsActive = true,
+            Status = Domain.Enums.EmployeeStatus.Activo,
+            PasswordHash = HashPassword(request.Password) // Hash simple
+        };
+
+        await _employeeRepository.AddAsync(employee);
+        await _employeeRepository.SaveChangesAsync();
+
+        // Enviar Email
+        try 
+        {
+            await _emailService.SendEmailAsync(employee.PersonalEmail, "Bienvenido a TalentoPlus", 
+                $"Hola {employee.FirstName}, tu cuenta ha sido creada exitosamente. Bienvenido al equipo.");
+        }
+        catch 
+        {
+            // Log error pero no fallar el registro
+        }
+    }
+
+    private string HashPassword(string password)
+    {
+        using var sha256 = System.Security.Cryptography.SHA256.Create();
+        var bytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+        return Convert.ToBase64String(bytes);
     }
 }

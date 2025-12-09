@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using TalentoPlus.Infrastructure.Data;
 using TalentoPlus.Infrastructure.Repositories;
 using TalentoPlus.Domain.Interfaces;
+using TalentoPlus.Application.Services.Interfaces;
+using TalentoPlus.Application.Services.Implementations;
+using TalentoPlus.Infrastructure.Services;
+using TalentoPlus.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +24,40 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Registrar repositorios
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IJobPositionRepository, JobPositionRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+// Registrar servicios de aplicación
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IExcelService, ExcelService>(); // Requerido por EmployeeService
+builder.Services.AddScoped<IPdfService, PdfService>(); // Requerido por EmployeeService
+builder.Services.AddScoped<IAIService, GeminiService>(); // Requerido por EmployeeService
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpClient(); // Requerido por GeminiService
+
+// Configurar JWT
+var key = System.Text.Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"] ?? "SecretKeyDefault12345678901234567890");
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"]
+    };
+});
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -40,6 +77,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

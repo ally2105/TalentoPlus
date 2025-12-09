@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TalentoPlus.Application.Services.Implementations;
+using TalentoPlus.Application.Services.Interfaces;
+using TalentoPlus.Application.Validators;
 using TalentoPlus.Domain.Entities;
+using TalentoPlus.Domain.Interfaces;
 using TalentoPlus.Infrastructure.Data;
 using TalentoPlus.Infrastructure.Repositories;
-using TalentoPlus.Domain.Interfaces;
-using TalentoPlus.Application.Services.Interfaces;
-using TalentoPlus.Application.Services.Implementations;
+using TalentoPlus.Infrastructure.Services;
 using FluentValidation;
-using TalentoPlus.Application.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +32,11 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 // Registrar servicios de aplicación
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<IExcelService, TalentoPlus.Infrastructure.Services.ExcelService>();
-builder.Services.AddScoped<IPdfService, TalentoPlus.Infrastructure.Services.PdfService>();
+builder.Services.AddScoped<IExcelService, ExcelService>();
+builder.Services.AddScoped<IPdfService, PdfService>();
+builder.Services.AddScoped<IAIService, GeminiService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddHttpClient();
 
 // Registrar validadores
 builder.Services.AddValidatorsFromAssemblyContaining<EmployeeCreateDtoValidator>();
