@@ -2,127 +2,182 @@
     ViewData["Title"] = "Inicio";
 }
 
-<!-- Hero Section -->
-<div class="container-fluid px-0">
-    <div class="hero-section position-relative overflow-hidden" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%); min-height: 500px;">
-        <div class="container py-5">
-            <div class="row align-items-center" style="min-height: 400px;">
-                <div class="col-lg-7 text-white py-5">
-                    <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInUp">
-                        Bienvenido a <span style="color: #F59E0B;">TalentoPlus</span>
+<!-- Hero Section with Glassmorphism -->
+<div class="hero-wrapper">
+    <div class="hero-background"></div>
+    <div class="hero-gradient"></div>
+    
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 py-5">
+                <div class="hero-content">
+                    <div class="badge-welcome mb-4">
+                        <i class="fas fa-sparkles me-2"></i>Sistema de Gestión de RRHH
+                    </div>
+                    <h1 class="hero-title mb-4">
+                        Gestiona tu
+                        <span class="gradient-text">TalentoPlus</span>
+                        de manera inteligente
                     </h1>
-                    <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s" style="max-width: 600px; font-size: 1.25rem; line-height: 1.8;">
-                        Sistema integral de gestión de recursos humanos.
+                    <p class="hero-subtitle mb-5">
+                        Plataforma integral para la administración de recursos humanos con IA,
+                        reportes avanzados y automatización de procesos.
                     </p>
-                    <div class="d-flex gap-3 flex-wrap animate__animated animate__fadeInUp animate__delay-2s">
-                        <a asp-area="" asp-controller="Dashboard" asp-action="Index" class="btn btn-lg shadow" style="background-color: #F59E0B; color: white; border: none;">
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn-primary-custom">
                             <i class="fas fa-chart-line me-2"></i>Ver Dashboard
+                            <span class="btn-shine"></span>
                         </a>
-                        <a asp-area="" asp-controller="Employees" asp-action="Index" class="btn btn-light btn-lg shadow">
+                        <a asp-controller="Employees" asp-action="Index" class="btn-secondary-custom">
                             <i class="fas fa-users me-2"></i>Gestionar Empleados
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-5 text-center d-none d-lg-flex align-items-center justify-content-center">
-                    <div class="illustration-container" style="animation: floatAnimation 3s ease-in-out infinite;">
-                        <i class="fas fa-building" style="font-size: 8rem; color: rgba(255, 255, 255, 0.2);"></i>
-                    </div>
-                </div>
             </div>
-        </div>
-        <!-- Wave Decoration -->
-        <div class="position-absolute bottom-0 start-0 w-100">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style="display: block;">
-                <path fill="#F9FAFB" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,106.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-            </svg>
-        </div>
-    </div>
-</div>
-
-<!-- Stats Section -->
-<div class="container my-5 py-5">
-    <div class="row g-4 text-center">
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100 hover-card" style="background-color: white;">
-                <div class="card-body p-4">
-                    <div class="mb-3">
-                        <i class="fas fa-users fa-3x" style="color: #3B82F6;"></i>
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="hero-illustration">
+                    <div class="glass-card main-card">
+                        <div class="card-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h3>2,847</h3>
+                        <p>Empleados Activos</p>
+                        <div class="stat-indicator positive">
+                            <i class="fas fa-arrow-up"></i> 12.5%
+                        </div>
                     </div>
-                    <h3 class="fw-bold mb-2">Empleados</h3>
-                    <p class="text-muted mb-0">Gestión completa</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100 hover-card" style="background-color: white;">
-                <div class="card-body p-4">
-                    <div class="mb-3">
-                        <i class="fas fa-file-excel fa-3x" style="color: #10B981;"></i>
+                    <div class="glass-card secondary-card card-1">
+                        <div class="mini-icon" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <span>Reportes PDF</span>
                     </div>
-                    <h3 class="fw-bold mb-2">Importación</h3>
-                    <p class="text-muted mb-0">Carga masiva Excel</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100 hover-card" style="background-color: white;">
-                <div class="card-body p-4">
-                    <div class="mb-3">
-                        <i class="fas fa-file-pdf fa-3x" style="color: #EF4444;"></i>
+                    <div class="glass-card secondary-card card-2">
+                        <div class="mini-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span>Chatbot IA</span>
                     </div>
-                    <h3 class="fw-bold mb-2">Reportes</h3>
-                    <p class="text-muted mb-0">Generación PDF</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100 hover-card" style="background-color: white;">
-                <div class="card-body p-4">
-                    <div class="mb-3">
-                        <i class="fas fa-robot fa-3x" style="color: #06B6D4;"></i>
+                    <div class="glass-card secondary-card card-3">
+                        <div class="mini-icon" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED);">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <span>Analytics</span>
                     </div>
-                    <h3 class="fw-bold mb-2">IA</h3>
-                    <p class="text-muted mb-0">Consultas inteligentes</p>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- Animated Circles -->
+    <div class="floating-circle circle-1"></div>
+    <div class="floating-circle circle-2"></div>
+    <div class="floating-circle circle-3"></div>
 </div>
 
-<!-- Features Section -->
-<div class="py-5" style="background-color: #F9FAFB;">
-    <div class="container py-5">
+<!-- Features Cards Section -->
+<div class="features-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box" data-aos="fade-up" data-aos-delay="0">
+                    <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #3B82F6, #2563EB);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Gestión de Empleados</h4>
+                    <p>Control total del personal con perfiles completos y actualizables</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #10B981, #059669);">
+                        <i class="fas fa-file-excel"></i>
+                    </div>
+                    <h4>Importación Excel</h4>
+                    <p>Carga masiva de datos desde hojas de cálculo de forma rápida</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #EF4444, #DC2626);">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h4>Reportes PDF</h4>
+                    <p>Genera hojas de vida profesionales en un solo clic</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon-wrapper" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED);">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h4>Chatbot con IA</h4>
+                    <p>Consultas inteligentes con Google Gemini AI</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Benefits Section -->
+<div class="benefits-section">
+    <div class="container">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold mb-3">Funcionalidades Principales</h2>
-            <p class="lead text-muted">Todo lo que necesitas para gestionar tu talento humano</p>
+            <div class="section-subtitle">Funcionalidades</div>
+            <h2 class="section-title">Todo lo que necesitas en un solo lugar</h2>
+            <p class="section-description">Herramientas profesionales para la gestión moderna de recursos humanos</p>
         </div>
         
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="feature-card text-center p-4">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-chart-bar fa-4x" style="color: #3B82F6;"></i>
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="benefit-content">
+                    <div class="benefit-item">
+                        <div class="benefit-number">01</div>
+                        <div class="benefit-text">
+                            <h4>Dashboard Analítico</h4>
+                            <p>Visualiza métricas clave en tiempo real con gráficos interactivos y toma decisiones basadas en datos</p>
+                        </div>
                     </div>
-                    <h4 class="fw-bold mb-3">Dashboard Analítico</h4>
-                    <p class="text-muted">Visualiza métricas clave, estadísticas en tiempo real y toma decisiones informadas con gráficos interactivos.</p>
+                    <div class="benefit-item">
+                        <div class="benefit-number">02</div>
+                        <div class="benefit-text">
+                            <h4>Notificaciones Automáticas</h4>
+                            <p>Envío automático de correos de bienvenida a nuevos empleados con toda la información necesaria</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-number">03</div>
+                        <div class="benefit-text">
+                            <h4>Inteligencia Artificial</h4>
+                            <p>Consulta información de empleados usando lenguaje natural con nuestro chatbot potenciado por Gemini AI</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="feature-card text-center p-4">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-envelope fa-4x" style="color: #F59E0B;"></i>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="benefits-visual">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-clock"></i>
+                            <h3>80%</h3>
+                            <p>Menos tiempo en tareas administrativas</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>99.9%</h3>
+                            <p>Precisión en datos</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-rocket"></i>
+                            <h3>5x</h3>
+                            <p>Más rápido que procesos manuales</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>100%</h3>
+                            <p>Seguridad garantizada</p>
+                        </div>
                     </div>
-                    <h4 class="fw-bold mb-3">Notificaciones Email</h4>
-                    <p class="text-muted">Envío automático de correos de bienvenida a empleados nuevos con información de acceso.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card text-center p-4">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-comments fa-4x" style="color: #10B981;"></i>
-                    </div>
-                    <h4 class="fw-bold mb-3">Chatbot IA</h4>
-                    <p class="text-muted">Consulta información de empleados en lenguaje natural gracias a la integración con Gemini AI.</p>
                 </div>
             </div>
         </div>
@@ -130,63 +185,535 @@
 </div>
 
 <!-- CTA Section -->
-<div class="container my-5 py-5">
-    <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">
-        <div class="card-body p-5 text-center text-white">
-            <h2 class="display-5 fw-bold mb-4">¿Listo para comenzar?</h2>
-            <p class="lead mb-4">Accede al panel de administración y gestiona tu equipo de manera eficiente.</p>
-            <div class="d-flex gap-3 justify-content-center">
-                <a asp-area="" asp-controller="Employees" asp-action="Index" class="btn btn-lg shadow" style="background-color: #F59E0B; color: white; border: none;">
-                    <i class="fas fa-arrow-right me-2"></i>Ir a Empleados
-                </a>
-                <a asp-area="" asp-controller="Dashboard" asp-action="Gemini" class="btn btn-light btn-lg shadow">
-                    <i class="fas fa-robot me-2"></i>Probar Chatbot IA
-                </a>
+<div class="cta-section">
+    <div class="container">
+        <div class="cta-card" data-aos="zoom-in">
+            <div class="cta-background"></div>
+            <div class="cta-content">
+                <h2>¿Listo para transformar tu gestión de RRHH?</h2>
+                <p>Únete a las empresas que ya están revolucionando su gestión de talento humano</p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
+                    <a asp-controller="Employees" asp-action="Index" class="btn-cta-primary">
+                        <i class="fas fa-arrow-right me-2"></i>Comenzar Ahora
+                    </a>
+                    <a asp-controller="Dashboard" asp-action="Gemini" class="btn-cta-secondary">
+                        <i class="fas fa-robot me-2"></i>Probar Chatbot IA
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    .hero-section {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .hover-card {
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-    
-    .hover-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
-    }
-    
-    .feature-card {
-        background: white;
-        border-radius: 10px;
-        transition: all 0.3s ease;
-    }
-    
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    }
-    
-    .feature-icon {
-        display: inline-block;
-        transition: transform 0.3s ease;
-    }
-    
-    .feature-card:hover .feature-icon {
-        transform: scale(1.1);
+    :root {
+        --primary: #3B82F6;
+        --primary-dark: #2563EB;
+        --secondary: #F59E0B;
+        --success: #10B981;
+        --danger: #EF4444;
+        --purple: #8B5CF6;
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-warm: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+        --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
+        --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
     }
 
-    @@keyframes fadeInUp {
+    /* Hero Section */
+    .hero-wrapper {
+        position: relative;
+        min-height: 90vh;
+        overflow: hidden;
+        padding: 60px 0;
+    }
+
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        z-index: 0;
+    }
+
+    .hero-gradient {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.4) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(245, 93, 108, 0.4) 0%, transparent 50%);
+        z-index: 1;
+    }
+
+    .min-vh-75 {
+        min-height: 75vh;
+    }
+
+    .badge-welcome {
+        display: inline-block;
+        padding: 8px 20px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50px;
+        color: white;
+        font-size: 0.875rem;
+        font-weight: 500;
+        animation: fadeInDown 0.6s ease-out;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        color: white;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+
+    .gradient-text {
+        background: linear-gradient(135deg, #FCD34D, #F59E0B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.7;
+        max-width: 550px;
+        animation: fadeInUp 0.6s ease-out 0.4s both;
+    }
+
+    /* Custom Buttons */
+    .btn-primary-custom,
+    .btn-secondary-custom {
+        position: relative;
+        padding: 14px 32px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        animation: fadeInUp 0.6s ease-out 0.6s both;
+    }
+
+    .btn-primary-custom {
+        background: linear-gradient(135deg, #F59E0B, #D97706);
+        color: white;
+        box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35);
+    }
+
+    .btn-primary-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(245, 158, 11, 0.45);
+        color: white;
+    }
+
+    .btn-secondary-custom {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary-custom:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    /* Glass Cards in Hero */
+    .hero-illustration {
+        position: relative;
+        height: 500px;
+        animation: fadeIn 0.8s ease-out 0.8s both;
+    }
+
+    .glass-card {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .main-card {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 280px;
+        text-align: center;
+        color: white;
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #F59E0B, #D97706);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        font-size: 1.5rem;
+    }
+
+    .main-card h3 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 12px 0 4px;
+    }
+
+    .main-card p {
+        font-size: 0.875rem;
+        opacity: 0.9;
+        margin-bottom: 12px;
+    }
+
+    .stat-indicator {
+        display: inline-block;
+        padding: 6px 12px;
+        background: rgba(16, 185, 129, 0.2);
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .stat-indicator.positive {
+        color: #10B981;
+    }
+
+    .secondary-card {
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+        font-weight: 500;
+        font-size: 0.875rem;
+    }
+
+    .card-1 {
+        top: 10%;
+        right: 5%;
+        animation-delay: 0.5s;
+    }
+
+    .card-2 {
+        bottom: 20%;
+        left: 0;
+        animation-delay: 1s;
+    }
+
+    .card-3 {
+        top: 30%;
+        left: -10%;
+        animation-delay: 1.5s;
+    }
+
+    .mini-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.125rem;
+    }
+
+    /* Floating Circles */
+    .floating-circle {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+        animation: floatRandom 20s infinite ease-in-out;
+    }
+
+    .circle-1 {
+        width: 300px;
+        height: 300px;
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .circle-2 {
+        width: 200px;
+        height: 200px;
+        bottom: 20%;
+        right: 15%;
+        animation-delay: 5s;
+    }
+
+    .circle-3 {
+        width: 150px;
+        height: 150px;
+        top: 60%;
+        left: 70%;
+        animation-delay: 10s;
+    }
+
+    /* Features Section */
+    .features-section {
+        padding: 80px 0;
+        background: white;
+        margin-top: -50px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .feature-box {
+        text-align: center;
+        padding: 32px 24px;
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #E5E7EB;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .feature-box:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        border-color: transparent;
+    }
+
+    .feature-icon-wrapper {
+        width: 70px;
+        height: 70px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 1.75rem;
+        color: white;
+    }
+
+    .feature-box h4 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1F2937;
+        margin-bottom: 12px;
+    }
+
+    .feature-box p {
+        color: #6B7280;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* Benefits Section */
+    .benefits-section {
+        padding: 100px 0;
+        background: linear-gradient(180deg, white 0%, #F9FAFB 100%);
+    }
+
+    .section-subtitle {
+        color: var(--primary);
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 12px;
+    }
+
+    .section-title {
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        font-weight: 800;
+        color: #1F2937;
+        margin-bottom: 16px;
+    }
+
+    .section-description {
+        font-size: 1.125rem;
+        color: #6B7280;
+        max-width: 600px;
+        margin: 0 auto 60px;
+    }
+
+    .benefit-item {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+
+    .benefit-number {
+        flex-shrink: 0;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.125rem;
+    }
+
+    .benefit-text h4 {
+        font-size: 1.375rem;
+        font-weight: 700;
+        color: #1F2937;
+        margin-bottom: 8px;
+    }
+
+    .benefit-text p {
+        color: #6B7280;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 28px 24px;
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .stat-card i {
+        font-size: 2rem;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 12px;
+    }
+
+    .stat-card h3 {
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: #1F2937;
+        margin: 8px 0;
+    }
+
+    .stat-card p {
+        color: #6B7280;
+        font-size: 0.875rem;
+        margin: 0;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        padding: 100px 0;
+        background: #F9FAFB;
+    }
+
+    .cta-card {
+        position: relative;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 24px;
+        padding: 80px 40px;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .cta-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+        background-image: 
+            radial-gradient(circle at 20% 50%, white 2px, transparent 2px),
+            radial-gradient(circle at 80% 80%, white 2px, transparent 2px);
+        background-size: 50px 50px;
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .cta-content h2 {
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-weight: 800;
+        color: white;
+        margin-bottom: 16px;
+    }
+
+    .cta-content p {
+        font-size: 1.125rem;
+        color: rgba(255, 255, 255, 0.9);
+        max-width: 650px;
+        margin: 0 auto;
+    }
+
+    .btn-cta-primary,
+    .btn-cta-secondary {
+        padding: 14px 32px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .btn-cta-primary {
+        background: linear-gradient(135deg, #F59E0B, #D97706);
+        color: white;
+        box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-cta-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(245, 158, 11, 0.5);
+        color: white;
+    }
+
+    .btn-cta-secondary {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-cta-secondary:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-2px);
+        color: white;
+    }
+
+    /* Animations */
+    @@keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @@keyframes fadeInDown {
         from {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(-20px);
         }
         to {
             opacity: 1;
@@ -194,29 +721,62 @@
         }
     }
 
-    .animate__animated {
-        animation-duration: 1s;
-        animation-fill-mode: both;
-    }
-
-    .animate__fadeInUp {
-        animation-name: fadeInUp;
-    }
-
-    .animate__delay-1s {
-        animation-delay: 0.3s;
-    }
-
-    .animate__delay-2s {
-        animation-delay: 0.6s;
-    }
-
-    @@keyframes floatAnimation {
-        0%, 100% {
-            transform: translateY(0px);
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
-        50% {
-            transform: translateY(-20px);
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @@keyframes floatRandom {
+        0%, 100% { transform: translate(0, 0); }
+        25% { transform: translate(20px, -20px); }
+        50% { transform: translate(-20px, 20px); }
+        75% { transform: translate(20px, 20px); }
+    }
+
+    /* Responsive */
+    @@media (max-width: 991px) {
+        .hero-wrapper {
+            min-height: auto;
+            padding: 40px 0;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .benefit-item {
+            margin-bottom: 30px;
+        }
+    }
+
+    @@media (max-width: 767px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+        
+        .btn-primary-custom,
+        .btn-secondary-custom {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .cta-card {
+            padding: 60px 24px;
         }
     }
 </style>

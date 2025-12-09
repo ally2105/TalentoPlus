@@ -1,4 +1,4 @@
-@model IEnumerable<TalentoPlus.Application.DTOs.Employees.EmployeeListDto>
+@model TalentoPlus.Web.Models.PaginatedList<TalentoPlus.Application.DTOs.Employees.EmployeeListDto>
 
 @{
     ViewData["Title"] = "Gestión de Empleados";
@@ -183,7 +183,104 @@
             </div>
         </div>
         <div class="card-footer bg-white py-3">
-            <small class="text-muted">Mostrando @Model.Count() registros</small>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    @{
+                        var currentPage = (int)ViewData["CurrentPage"];
+                        var pageSize = (int)ViewData["PageSize"];
+                        var totalPages = (int)ViewData["TotalPages"];
+                        var totalCount = (int)ViewData["TotalCount"];
+                        var startRecord = totalCount > 0 ? ((currentPage - 1) * pageSize) + 1 : 0;
+                        var endRecord = Math.Min(currentPage * pageSize, totalCount);
+                    }
+                    <small class="text-muted">
+                        Mostrando <strong>@startRecord</strong> a <strong>@endRecord</strong> de <strong>@totalCount</strong> registros
+                    </small>
+                </div>
+                <div class="col-md-6">
+                    @if (totalPages > 1)
+                    {
+                        <nav aria-label="Navegación de páginas">
+                            <ul class="pagination pagination-sm justify-content-end mb-0">
+                                <!-- Primera página -->
+                                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { searchTerm = ViewData["CurrentFilter"], pageNumber = 1, pageSize = pageSize })" aria-label="Primera">
+                                        <i class="fas fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                
+                                <!-- Anterior -->
+                                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { searchTerm = ViewData["CurrentFilter"], pageNumber = currentPage - 1, pageSize = pageSize })" aria-label="Anterior">
+                                        <i class="fas fa-angle-left"></i>
+                                    </a>
+                                </li>
+
+                                @{
+                                    var startPage = Math.Max(1, currentPage - 2);
+                                    var endPage = Math.Min(totalPages, currentPage + 2);
+                                    
+                                    // Ajustar para mostrar siempre 5 páginas si es posible
+                                    if (endPage - startPage < 4)
+                                    {
+                                        if (startPage == 1)
+                                        {
+                                            endPage = Math.Min(totalPages, startPage + 4);
+                                        }
+                                        else if (endPage == totalPages)
+                                        {
+                                            startPage = Math.Max(1, endPage - 4);
+                                        }
+                                    }
+                                }
+
+                                <!-- Números de página -->
+                                @for (int i = startPage; i <= endPage; i++)
+                                {
+                                    <li class="page-item @(i == currentPage ? "active" : "")">
+                                        <a class="page-link" href="@Url.Action("Index", new { searchTerm = ViewData["CurrentFilter"], pageNumber = i, pageSize = pageSize })">@i</a>
+                                    </li>
+                                }
+
+                                <!-- Siguiente -->
+                                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { searchTerm = ViewData["CurrentFilter"], pageNumber = currentPage + 1, pageSize = pageSize })" aria-label="Siguiente">
+                                        <i class="fas fa-angle-right"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Última página -->
+                                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { searchTerm = ViewData["CurrentFilter"], pageNumber = totalPages, pageSize = pageSize })" aria-label="Última">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+                </div>
+            </div>
+            
+            <!-- Selector de tamaño de página -->
+            @if (totalCount > 10)
+            {
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-center gap-2">
+                            <small class="text-muted">Registros por página:</small>
+                            <div class="btn-group btn-group-sm" role="group">
+                                @foreach (var size in new[] { 5, 10, 25, 50, 100 })
+                                {
+                                    <a href="@Url.Action("Index", new { searchTerm = ViewData["CurrentFilter"], pageNumber = 1, pageSize = size })" 
+                                       class="btn btn-outline-primary @(pageSize == size ? "active" : "")">
+                                        @size
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>

@@ -41,7 +41,7 @@ public class EmployeesController : Controller
     }
 
     // GET: Employees
-    public async Task<IActionResult> Index(string searchTerm)
+    public async Task<IActionResult> Index(string searchTerm, int pageNumber = 1, int pageSize = 10)
     {
         IEnumerable<EmployeeListDto> employees;
 
@@ -55,7 +55,19 @@ public class EmployeesController : Controller
             employees = await _employeeService.GetAllAsync();
         }
 
-        return View(employees);
+        // Crear lista paginada
+        var paginatedEmployees = Models.PaginatedList<EmployeeListDto>.Create(
+            employees, 
+            pageNumber, 
+            pageSize);
+
+        // Pasar información de paginación a la vista
+        ViewData["CurrentPage"] = pageNumber;
+        ViewData["PageSize"] = pageSize;
+        ViewData["TotalPages"] = paginatedEmployees.TotalPages;
+        ViewData["TotalCount"] = paginatedEmployees.TotalCount;
+
+        return View(paginatedEmployees);
     }
 
     // GET: Employees/Details/5
