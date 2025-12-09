@@ -124,90 +124,65 @@ dotnet ef migrations add InitialCreate --project src/TalentoPlus.Infrastructure 
 dotnet ef database update --project src/TalentoPlus.Infrastructure --startup-project src/TalentoPlus.Web
 ```
 
+## 🐳 Ejecución con Docker
+
+El proyecto está completamente dockerizado. Para ejecutarlo:
+
+1.  Copia el archivo de ejemplo de variables de entorno:
+    ```bash
+    cp .env.example .env
+    ```
+2.  Edita el archivo `.env` con tus credenciales reales (Base de datos, API Key de Gemini, JWT Secret).
+3.  Ejecuta docker-compose:
+    ```bash
+    docker-compose up --build
+    ```
+
+Esto levantará:
+*   **Web App**: http://localhost:5000
+*   **API**: http://localhost:5001
+
+## 🧪 Ejecución de Pruebas
+
+Para ejecutar las pruebas unitarias y de integración:
+
+```bash
+dotnet test src/TalentoPlus.Tests/TalentoPlus.Tests.csproj
+```
+
 ## 📝 Estado Actual del Proyecto
 
 ### ✅ FASE 1 — Preparación
 **US-01 - Crear arquitectura por capas** - ✔️ COMPLETADO
 
-- [x] Creación de solución y proyectos
-- [x] Referencias entre capas configuradas
-- [x] Paquetes NuGet esenciales instalados
-- [x] Compilación exitosa de la solución
-- [x] Resolución de problemas de runtime Ubuntu 24.04
-
 ### ✅ FASE 2 — Dominio + Infraestructura base
 **US-02 - Modelar entidades del dominio** - ✔️ COMPLETADO
-
-#### Entidades Creadas:
-- [x] `BaseEntity` - Clase base con propiedades comunes
-- [x] `Employee` - Entidad principal de empleados
-- [x] `Department` - Departamentos de la empresa
-- [x] `JobPosition` - Cargos laborales
-- [x] `EducationLevel` - Niveles educativos
-
-#### Enumeraciones:
-- [x] `EmployeeStatus` (Activo, Inactivo, Vacaciones, etc.)
-- [x] `EducationLevelType` (Primaria, Secundaria, Técnico, Pregrado, etc.)
-
-#### Value Objects:
-- [x] `Email` - Validación y normalización de emails
-- [x] `PhoneNumber` - Validación y normalización de teléfonos
-
-#### Interfaces de Repositorio:
-- [x] `IRepository<T>` - Repositorio genérico
-- [x] `IEmployeeRepository` - Repositorio de empleados
-- [x] `IDepartmentRepository` - Repositorio de departamentos
-
-**Resultado**: 13 archivos de dominio, compilación exitosa sin warnings ✨
-
 **US-03 - Configurar EF Core + PostgreSQL** - ✔️ COMPLETADO
 
-#### Configuraciones de Base de Datos:
-- [x] `DepartmentConfiguration` - FluentAPI para Department
-- [x] `JobPositionConfiguration` - FluentAPI para JobPosition
-- [x] `EmployeeConfiguration` - FluentAPI para Employee
-- [x] `EducationLevelConfiguration` - FluentAPI para EducationLevel
+### ✅ FASE 3 — Funcionalidades Core (Web)
+**US-04 - Configurar Identity** - ✔️ COMPLETADO
+**US-05 - CRUD Empleados** - ✔️ COMPLETADO
+**US-06 - Importación Excel** - ✔️ COMPLETADO
+**US-07 - Generación PDF** - ✔️ COMPLETADO
 
-#### DbContext y Repositorios:
-- [x] `ApplicationDbContext` - Contexto principal con auditoría automática
-- [x] `Repository<T>` - Repositorio genérico (9 métodos base)
-- [x] `EmployeeRepository` - Repositorio especializado (14 métodos)
-- [x] `DepartmentRepository` - Repositorio especializado (9 métodos)
+### ✅ FASE 4 — Dashboard + IA
+**US-08 - Dashboard Estadísticas** - ✔️ COMPLETADO
+**US-09 - Chatbot IA (Gemini)** - ✔️ COMPLETADO
 
-#### Migraciones:
-- [x] Migración `InitialCreate` generada
-- [x] 4 tablas configuradas: Departments, JobPositions, Employees, EducationLevels
-- [x] ~20 índices creados (únicos, compuestos, parciales)
-- [x] Relaciones configuradas (Restrict, Cascade)
+### ✅ FASE 5 — API REST
+**US-10 - Listar Departamentos** - ✔️ COMPLETADO
+**US-11 - Registro Empleados + Email** - ✔️ COMPLETADO
+**US-12 - Login JWT** - ✔️ COMPLETADO
+**US-13 - Perfil Usuario** - ✔️ COMPLETADO
+**US-14 - Descargar PDF (API)** - ✔️ COMPLETADO
 
-#### Configuración de Proyectos:
-- [x] Web - DbContext y repositorios registrados
-- [x] API - DbContext y repositorios registrados
-- [x] Connection strings configurados para Clever Cloud
-- [x] Retry policy para conexiones PostgreSQL
+### ✅ FASE 6 — Pruebas
+**US-15 - Pruebas Unitarias** - ✔️ COMPLETADO
+**US-16 - Pruebas de Integración** - ✔️ COMPLETADO
 
-**Resultado**: 12 archivos de infraestructura, migración lista para aplicar 🚀
-
-### 📄 Documentación:
-- ✅ `README.md` - Documentación general del proyecto
-- ✅ `docs/DOMAIN_MODEL.md` - Modelado detallado del dominio
-- ✅ `docs/US-03-INFRASTRUCTURE.md` - Documentación completa de infraestructura
-- ✅ `docs/CLEVER_CLOUD_SETUP.md` - Guía de configuración de Clever Cloud
-
-### 🎯 Próximos Pasos:
-- [x] ~~**US-03**: Configurar DbContext y Entity Framework~~ ✅ COMPLETADO
-- [ ] **Aplicar migraciones** a Clever Cloud PostgreSQL
-- [ ] **US-04**: Configurar ASP.NET Core Identity
-- [ ] **US-05**: Crear servicios de aplicación (DTOs, casos de uso)
-- [ ] **US-06**: Implementar importación de Excel
-- [ ] **US-07**: Implementar generación de PDF
-
-## 🛠️ Tecnologías Adicionales a Integrar
-
-- **Servicio de Email**: SMTP para envío de correos
-- **Inteligencia Artificial**: Gemini API (recomendado) o alternativas
-- **Docker**: Containerización completa
-- **Testing**: xUnit para pruebas unitarias e integración
+### ✅ FASE 7 — Deploy + Docker
+**US-17 - Configurar Docker** - ✔️ COMPLETADO
+**US-18 - Documentación Final** - ✔️ COMPLETADO
 
 ## 📞 Contacto
 
@@ -216,5 +191,5 @@ Modernización del área de Recursos Humanos
 
 ---
 
-**Última actualización**: Fase 2 - US-02 Modelado de Dominio Completado ✅
+**Última actualización**: Proyecto Finalizado y Listo para Despliegue 🚀
 

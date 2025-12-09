@@ -1,8 +1,222 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero Section -->
+<div class="container-fluid px-0">
+    <div class="hero-section position-relative overflow-hidden" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%); min-height: 500px;">
+        <div class="container py-5">
+            <div class="row align-items-center" style="min-height: 400px;">
+                <div class="col-lg-7 text-white py-5">
+                    <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInUp">
+                        Bienvenido a <span style="color: #F59E0B;">TalentoPlus</span>
+                    </h1>
+                    <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s" style="max-width: 600px; font-size: 1.25rem; line-height: 1.8;">
+                        Sistema integral de gestión de recursos humanos.
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap animate__animated animate__fadeInUp animate__delay-2s">
+                        <a asp-area="" asp-controller="Dashboard" asp-action="Index" class="btn btn-lg shadow" style="background-color: #F59E0B; color: white; border: none;">
+                            <i class="fas fa-chart-line me-2"></i>Ver Dashboard
+                        </a>
+                        <a asp-area="" asp-controller="Employees" asp-action="Index" class="btn btn-light btn-lg shadow">
+                            <i class="fas fa-users me-2"></i>Gestionar Empleados
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-center d-none d-lg-flex align-items-center justify-content-center">
+                    <div class="illustration-container" style="animation: floatAnimation 3s ease-in-out infinite;">
+                        <i class="fas fa-building" style="font-size: 8rem; color: rgba(255, 255, 255, 0.2);"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Wave Decoration -->
+        <div class="position-absolute bottom-0 start-0 w-100">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" style="display: block;">
+                <path fill="#F9FAFB" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,106.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+    </div>
 </div>
+
+<!-- Stats Section -->
+<div class="container my-5 py-5">
+    <div class="row g-4 text-center">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 hover-card" style="background-color: white;">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-users fa-3x" style="color: #3B82F6;"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2">Empleados</h3>
+                    <p class="text-muted mb-0">Gestión completa</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 hover-card" style="background-color: white;">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-file-excel fa-3x" style="color: #10B981;"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2">Importación</h3>
+                    <p class="text-muted mb-0">Carga masiva Excel</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 hover-card" style="background-color: white;">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-file-pdf fa-3x" style="color: #EF4444;"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2">Reportes</h3>
+                    <p class="text-muted mb-0">Generación PDF</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 hover-card" style="background-color: white;">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-robot fa-3x" style="color: #06B6D4;"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2">IA</h3>
+                    <p class="text-muted mb-0">Consultas inteligentes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="py-5" style="background-color: #F9FAFB;">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Funcionalidades Principales</h2>
+            <p class="lead text-muted">Todo lo que necesitas para gestionar tu talento humano</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-chart-bar fa-4x" style="color: #3B82F6;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Dashboard Analítico</h4>
+                    <p class="text-muted">Visualiza métricas clave, estadísticas en tiempo real y toma decisiones informadas con gráficos interactivos.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-envelope fa-4x" style="color: #F59E0B;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Notificaciones Email</h4>
+                    <p class="text-muted">Envío automático de correos de bienvenida a empleados nuevos con información de acceso.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-comments fa-4x" style="color: #10B981;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Chatbot IA</h4>
+                    <p class="text-muted">Consulta información de empleados en lenguaje natural gracias a la integración con Gemini AI.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="container my-5 py-5">
+    <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">
+        <div class="card-body p-5 text-center text-white">
+            <h2 class="display-5 fw-bold mb-4">¿Listo para comenzar?</h2>
+            <p class="lead mb-4">Accede al panel de administración y gestiona tu equipo de manera eficiente.</p>
+            <div class="d-flex gap-3 justify-content-center">
+                <a asp-area="" asp-controller="Employees" asp-action="Index" class="btn btn-lg shadow" style="background-color: #F59E0B; color: white; border: none;">
+                    <i class="fas fa-arrow-right me-2"></i>Ir a Empleados
+                </a>
+                <a asp-area="" asp-controller="Dashboard" asp-action="Gemini" class="btn btn-light btn-lg shadow">
+                    <i class="fas fa-robot me-2"></i>Probar Chatbot IA
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hover-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .hover-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    }
+    
+    .feature-card {
+        background: white;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .feature-icon {
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1);
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate__animated {
+        animation-duration: 1s;
+        animation-fill-mode: both;
+    }
+
+    .animate__fadeInUp {
+        animation-name: fadeInUp;
+    }
+
+    .animate__delay-1s {
+        animation-delay: 0.3s;
+    }
+
+    .animate__delay-2s {
+        animation-delay: 0.6s;
+    }
+
+    @@keyframes floatAnimation {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+</style>

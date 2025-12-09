@@ -1,5 +1,44 @@
+/* ==========================================
+   TalentoPlus - Variables de Color Profesional
+   ========================================== */
+
+:root {
+  /* Colores de Fondo */
+  --bg-primary: #1F2937;
+  --bg-secondary: #111827;
+  --bg-light: #F9FAFB;
+  --bg-card: #374151;
+  
+  /* Colores de Texto */
+  --text-primary: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  --text-dark: #1F2937;
+  
+  /* Colores de Marca */
+  --color-primary: #3B82F6;
+  --color-secondary: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #06B6D4;
+  
+  /* Bordes y Divisores */
+  --border-color: #374151;
+  --border-light: #E5E7EB;
+  
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================
+   Estilos Base
+   ========================================== */
+
 html {
   font-size: 14px;
+  scroll-behavior: smooth;
 }
 
 @media (min-width: 768px) {
@@ -8,15 +47,238 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  margin-bottom: 60px;
   position: relative;
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+/* Modo Oscuro para Dashboard */
+body.dark-mode {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* ==========================================
+   Componentes Bootstrap Personalizados
+   ========================================== */
+
+/* Botones */
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2563EB;
+  border-color: #2563EB;
+}
+
+.btn-success {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+.btn-success:hover {
+  background-color: #059669;
+  border-color: #059669;
+}
+
+.btn-warning {
+  background-color: var(--color-warning);
+  border-color: var(--color-warning);
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #D97706;
+  border-color: #D97706;
+}
+
+.btn-danger {
+  background-color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.btn-danger:hover {
+  background-color: #DC2626;
+  border-color: #DC2626;
+}
+
+/* Cards */
+.card {
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+body.dark-mode .card {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Forms */
+.form-control, .form-select {
+  border-color: var(--border-light);
+  transition: border-color 0.15s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Tabla */
+.table {
+  color: var(--text-dark);
+}
+
+body.dark-mode .table {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .table thead th {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .table tbody tr {
+  border-color: var(--border-color);
+}
+
+body.dark-mode .table tbody tr:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+/* Navegación */
+.navbar {
+  box-shadow: var(--shadow-sm);
+}
+
+body.dark-mode .navbar {
+  background-color: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+body.dark-mode .navbar-brand,
+body.dark-mode .nav-link {
+  color: var(--text-primary) !important;
+}
+
+body.dark-mode .nav-link:hover {
+  color: var(--color-primary) !important;
+}
+
+/* Badges */
+.badge.bg-primary {
+  background-color: var(--color-primary) !important;
+}
+
+.badge.bg-success {
+  background-color: var(--color-secondary) !important;
+}
+
+.badge.bg-warning {
+  background-color: var(--color-warning) !important;
+}
+
+.badge.bg-danger {
+  background-color: var(--color-error) !important;
+}
+
+/* Alertas */
+.alert-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+}
+
+.alert-danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+.alert-warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+}
+
+/* ==========================================
+   Utilidades
+   ========================================== */
+
+.text-primary-custom {
+  color: var(--color-primary) !important;
+}
+
+.text-secondary-custom {
+  color: var(--text-secondary) !important;
+}
+
+.bg-primary-custom {
+  background-color: var(--color-primary) !important;
+}
+
+.bg-card {
+  background-color: var(--bg-card) !important;
+}
+
+.border-custom {
+  border-color: var(--border-color) !important;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Scrollbar personalizado (para navegadores webkit) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-light);
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
 }

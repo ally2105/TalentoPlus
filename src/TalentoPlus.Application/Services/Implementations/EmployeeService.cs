@@ -275,8 +275,15 @@ public class EmployeeService : IEmployeeService
         // Enviar Email
         try 
         {
-            await _emailService.SendEmailAsync(employee.PersonalEmail, "Bienvenido a TalentoPlus", 
-                $"Hola {employee.FirstName}, tu cuenta ha sido creada exitosamente. Bienvenido al equipo.");
+            var subject = "Bienvenido a TalentoPlus - Registro Exitoso";
+            var body = $@"
+                <h2>Hola {employee.FirstName},</h2>
+                <p>Tu registro en <strong>TalentoPlus</strong> ha sido exitoso.</p>
+                <p>Tus datos han sido recibidos correctamente. Podrás autenticarte en la plataforma una vez que tu cuenta sea habilitada por el administrador.</p>
+                <br>
+                <p>Atentamente,<br>El equipo de TalentoPlus</p>";
+
+            await _emailService.SendEmailAsync(employee.PersonalEmail, subject, body);
         }
         catch 
         {

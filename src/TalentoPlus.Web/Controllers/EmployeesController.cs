@@ -16,6 +16,7 @@ public class EmployeesController : Controller
     private readonly IJobPositionRepository _jobPositionRepository;
     private readonly IExcelService _excelService;
     private readonly IPdfService _pdfService;
+    private readonly IEmailService _emailService;
     private readonly IValidator<EmployeeCreateDto> _createValidator;
     private readonly IValidator<EmployeeUpdateDto> _updateValidator;
 
@@ -25,6 +26,7 @@ public class EmployeesController : Controller
         IJobPositionRepository jobPositionRepository,
         IExcelService excelService,
         IPdfService pdfService,
+        IEmailService emailService,
         IValidator<EmployeeCreateDto> createValidator,
         IValidator<EmployeeUpdateDto> updateValidator)
     {
@@ -33,6 +35,7 @@ public class EmployeesController : Controller
         _jobPositionRepository = jobPositionRepository;
         _excelService = excelService;
         _pdfService = pdfService;
+        _emailService = emailService;
         _createValidator = createValidator;
         _updateValidator = updateValidator;
     }
@@ -289,6 +292,53 @@ public class EmployeesController : Controller
             TempData["ErrorMessage"] = "Error al generar el PDF: " + ex.Message;
             return RedirectToAction(nameof(Details), new { id });
         }
+    }
+
+    // POST: Employees/SendEmail/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SendEmail(int id)
+    {
+        var employee = await _employeeService.GetByIdAsync(id);
+        if (employee == null)
+        {
+            TempData["ErrorMessage"] = "Empleado no encontrado.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (string.IsNullOrEmpty(employee.PersonalEmail))
+        {
+            TempData["ErrorMessage"] = "El empleado no tiene un correo electrónico registrado.";
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        try
+        {
+            var subject = "Bienvenido a TalentoPlus - Registro Exitoso";
+            var body = $@"
+                <h2>Hola {employee.FirstName},</h2>
+                <p>Tu registro en <strong>TalentoPlus</strong> ha sido exitoso.</p>
+                <p>Tus datos han sido recibidos correctamente. Podrás autenticarte en la plataforma una vez que tu cuenta sea habilitada por el administrador.</p>
+                <br>
+                <p><strong>Información de tu cuenta:</strong></p>
+                <ul>
+                    <li>Documento: {employee.DocumentNumber}</li>
+                    <li>Departamento: {employee.DepartmentName}</li>
+                    <li>Cargo: {employee.JobPositionTitle}</li>
+                </ul>
+                <br>
+                <p>Atentamente,<br>El equipo de TalentoPlus</p>";
+
+            await _emailService.SendEmailAsync(employee.PersonalEmail, subject, body);
+
+            TempData["SuccessMessage"] = $"✅ Correo enviado exitosamente a {employee.PersonalEmail}";
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Error al enviar el correo: {ex.Message}";
+        }
+
+        return RedirectToAction(nameof(Details), new { id });
     }
 
     private async Task LoadViewBags()
