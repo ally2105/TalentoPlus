@@ -1,0 +1,161 @@
+@model TalentoPlus.Application.DTOs.Employees.EmployeeCreateDto
+@using TalentoPlus.Domain.Enums
+
+<div class="row g-3">
+    <!-- Información Personal -->
+    <div class="col-12">
+        <h5 class="text-primary border-bottom pb-2 mb-3">
+            <i class="fas fa-user me-2"></i>Información Personal
+        </h5>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="DocumentType" class="form-label">Tipo Documento</label>
+        <select asp-for="DocumentType" class="form-select">
+            <option value="CC">Cédula de Ciudadanía</option>
+            <option value="CE">Cédula de Extranjería</option>
+            <option value="TI">Tarjeta de Identidad</option>
+            <option value="PAS">Pasaporte</option>
+        </select>
+        <span asp-validation-for="DocumentType" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="DocumentNumber" class="form-label">Número Documento</label>
+        <input asp-for="DocumentNumber" class="form-control" />
+        <span asp-validation-for="DocumentNumber" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="FirstName" class="form-label">Primer Nombre</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="MiddleName" class="form-label">Segundo Nombre</label>
+        <input asp-for="MiddleName" class="form-control" />
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="LastName" class="form-label">Primer Apellido</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="SecondLastName" class="form-label">Segundo Apellido</label>
+        <input asp-for="SecondLastName" class="form-control" />
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="DateOfBirth" class="form-label">Fecha Nacimiento</label>
+        <input asp-for="DateOfBirth" class="form-control" type="date" />
+        <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="Gender" class="form-label">Género</label>
+        <select asp-for="Gender" class="form-select">
+            <option value="">Seleccione...</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Otro">Otro</option>
+        </select>
+    </div>
+
+    <!-- Información de Contacto -->
+    <div class="col-12 mt-4">
+        <h5 class="text-primary border-bottom pb-2 mb-3">
+            <i class="fas fa-address-book me-2"></i>Información de Contacto
+        </h5>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="PersonalEmail" class="form-label">Email Personal</label>
+        <input asp-for="PersonalEmail" class="form-control" type="email" />
+        <span asp-validation-for="PersonalEmail" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="CorporateEmail" class="form-label">Email Corporativo</label>
+        <input asp-for="CorporateEmail" class="form-control" type="email" />
+        <span asp-validation-for="CorporateEmail" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="PhoneNumber" class="form-label">Teléfono</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="AlternativePhoneNumber" class="form-label">Teléfono Alternativo</label>
+        <input asp-for="AlternativePhoneNumber" class="form-control" />
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="City" class="form-label">Ciudad</label>
+        <input asp-for="City" class="form-control" />
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="Country" class="form-label">País</label>
+        <input asp-for="Country" class="form-control" value="Colombia" />
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Address" class="form-label">Dirección</label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+
+    <!-- Información Laboral -->
+    <div class="col-12 mt-4">
+        <h5 class="text-primary border-bottom pb-2 mb-3">
+            <i class="fas fa-briefcase me-2"></i>Información Laboral
+        </h5>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="DepartmentId" class="form-label">Departamento</label>
+        <select asp-for="DepartmentId" class="form-select" asp-items="ViewBag.Departments">
+            <option value="">Seleccione...</option>
+        </select>
+        <span asp-validation-for="DepartmentId" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="JobPositionId" class="form-label">Cargo</label>
+        <select asp-for="JobPositionId" class="form-select" asp-items="ViewBag.JobPositions">
+            <option value="">Seleccione...</option>
+        </select>
+        <span asp-validation-for="JobPositionId" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="HireDate" class="form-label">Fecha Ingreso</label>
+        <input asp-for="HireDate" class="form-control" type="date" />
+        <span asp-validation-for="HireDate" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="Salary" class="form-label">Salario</label>
+        <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input asp-for="Salary" class="form-control" type="number" />
+        </div>
+        <span asp-validation-for="Salary" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="Status" class="form-label">Estado</label>
+        <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<EmployeeStatus>()">
+        </select>
+        <span asp-validation-for="Status" class="text-danger small"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="ProfessionalProfile" class="form-label">Perfil Profesional</label>
+        <textarea asp-for="ProfessionalProfile" class="form-control" rows="3"></textarea>
+    </div>
+</div>

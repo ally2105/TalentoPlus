@@ -15,6 +15,16 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
     {
     }
 
+    public override async Task<IEnumerable<Employee>> GetAllAsync()
+    {
+        return await _dbSet
+            .Where(e => e.IsActive)
+            .Include(e => e.Department)
+            .Include(e => e.JobPosition)
+            .OrderByDescending(e => e.CreatedAt)
+            .ToListAsync();
+    }
+
     public async Task<Employee?> GetByDocumentNumberAsync(string documentNumber)
     {
         return await _dbSet
@@ -138,5 +148,12 @@ public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
             .Include(e => e.JobPosition)
             .OrderBy(e => e.HireDate)
             .ToListAsync();
+    }
+
+    public async Task DeleteAllAsync()
+    {
+        // Borrado masivo y rápido de tablas relacionadas
+        // CASCADE asegura que se borren los registros dependientes (JobPositions, Employees) al borrar Departments
+        await _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"Departments\", \"JobPositions\", \"Employees\" RESTART IDENTITY CASCADE");
     }
 }

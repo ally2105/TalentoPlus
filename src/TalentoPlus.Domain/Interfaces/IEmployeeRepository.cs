@@ -72,4 +72,9 @@ public interface IEmployeeRepository : IRepository<Employee>
     /// Obtiene empleados contratados en un rango de fechas
     /// </summary>
     Task<IEnumerable<Employee>> GetHiredBetweenAsync(DateTime startDate, DateTime endDate);
+    
+    /// <summary>
+    /// Elimina TODOS los empleados, cargos y departamentos (Solo para pruebas)
+    /// </summary>
+    Task DeleteAllAsync();
 }

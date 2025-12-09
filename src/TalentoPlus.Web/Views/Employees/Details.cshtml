@@ -1,0 +1,122 @@
+@model TalentoPlus.Application.DTOs.Employees.EmployeeDto
+
+@{
+    ViewData["Title"] = "Detalles del Empleado";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">Detalles del Empleado</h1>
+            <p class="text-muted mb-0">Información completa de @Model.FullName</p>
+        </div>
+        <div>
+            <a asp-action="DownloadResume" asp-route-id="@Model.Id" class="btn btn-primary shadow-sm me-2">
+                <i class="fas fa-file-pdf me-2"></i>Descargar HV
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning shadow-sm me-2">
+                <i class="fas fa-edit me-2"></i>Editar
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm">
+                <i class="fas fa-arrow-left me-2"></i>Volver
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Tarjeta Principal -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow border-0 h-100">
+                <div class="card-body text-center p-5">
+                    <div class="avatar-initial rounded-circle bg-primary text-white mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; font-size: 2.5rem; font-weight: bold;">
+                        @Model.FullName.Substring(0, 1)
+                    </div>
+                    <h4 class="mb-1">@Model.FullName</h4>
+                    <p class="text-muted mb-3">@Model.JobPositionTitle</p>
+                    
+                    <div class="mb-4">
+                        <span class="badge bg-light text-dark border me-1">@Model.DepartmentName</span>
+                        <span class="badge bg-success">@Model.StatusName</span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a href="mailto:@Model.CorporateEmail" class="btn btn-outline-primary">
+                            <i class="fas fa-envelope me-2"></i>Enviar Email
+                        </a>
+                        <a href="tel:@Model.PhoneNumber" class="btn btn-outline-secondary">
+                            <i class="fas fa-phone me-2"></i>Llamar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información Detallada -->
+        <div class="col-md-8 mb-4">
+            <div class="card shadow border-0 h-100">
+                <div class="card-header bg-white py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Información Personal y Laboral</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="small text-muted text-uppercase fw-bold">Documento</label>
+                            <p class="mb-0 fw-bold">@Model.DocumentType @Model.DocumentNumber</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-muted text-uppercase fw-bold">Fecha Nacimiento</label>
+                            <p class="mb-0">@Model.DateOfBirth.ToString("dd/MM/yyyy") (@Model.Age años)</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-muted text-uppercase fw-bold">Email Personal</label>
+                            <p class="mb-0">@Model.PersonalEmail</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-muted text-uppercase fw-bold">Email Corporativo</label>
+                            <p class="mb-0">@(Model.CorporateEmail ?? "N/A")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-muted text-uppercase fw-bold">Teléfono</label>
+                            <p class="mb-0">@Model.PhoneNumber</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-muted text-uppercase fw-bold">Dirección</label>
+                            <p class="mb-0">@Model.Address, @Model.City, @Model.Country</p>
+                        </div>
+                        
+                        <div class="col-12 border-top my-2"></div>
+
+                        <div class="col-md-6">
+                            <label class="small text-muted text-uppercase fw-bold">Fecha Ingreso</label>
+                            <p class="mb-0">@Model.HireDate.ToString("dd/MM/yyyy")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-muted text-uppercase fw-bold">Antigüedad</label>
+                            <p class="mb-0">@Model.YearsOfService.ToString("F1") años</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-muted text-uppercase fw-bold">Salario</label>
+                            <p class="mb-0">$@Model.Salary.ToString("N0")</p>
+                        </div>
+                        
+                        @if (!string.IsNullOrEmpty(Model.ProfessionalProfile))
+                        {
+                            <div class="col-12 border-top my-2"></div>
+                            <div class="col-12">
+                                <label class="small text-muted text-uppercase fw-bold">Perfil Profesional</label>
+                                <p class="mb-0 text-justify">@Model.ProfessionalProfile</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="card-footer bg-white text-muted small">
+                    Registrado el: @Model.CreatedAt.ToString("g")
+                    @if (Model.UpdatedAt.HasValue)
+                    {
+                        <span class="ms-3">Última actualización: @Model.UpdatedAt.Value.ToString("g")</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

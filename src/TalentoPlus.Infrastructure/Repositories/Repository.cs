@@ -75,4 +75,9 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         return await _context.SaveChangesAsync();
     }
+
+    public void ClearChangeTracker()
+    {
+        _context.ChangeTracker.Clear();
+    }
 }

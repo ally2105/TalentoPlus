@@ -1,0 +1,245 @@
+using TalentoPlus.Application.DTOs.Employees;
+using TalentoPlus.Application.Services.Interfaces;
+using TalentoPlus.Domain.Entities;
+using TalentoPlus.Domain.Interfaces;
+
+namespace TalentoPlus.Application.Services.Implementations;
+
+public class EmployeeService : IEmployeeService
+{
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IDepartmentRepository _departmentRepository;
+
+    public EmployeeService(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository)
+    {
+        _employeeRepository = employeeRepository;
+        _departmentRepository = departmentRepository;
+    }
+
+    public async Task<IEnumerable<EmployeeListDto>> GetAllAsync()
+    {
+        var employees = await _employeeRepository.GetAllAsync();
+        
+        // Mapeo manual (idealmente usar AutoMapper)
+        return employees.Select(e => new EmployeeListDto
+        {
+            Id = e.Id,
+            FullName = e.FullName,
+            DocumentNumber = e.DocumentNumber,
+            PersonalEmail = e.PersonalEmail,
+            CorporateEmail = e.CorporateEmail,
+            DepartmentName = e.Department?.Name ?? "Sin Departamento",
+            JobPositionTitle = e.JobPosition?.Title ?? "Sin Cargo",
+            Status = e.Status,
+            HireDate = e.HireDate
+        });
+    }
+
+    public async Task<EmployeeDto?> GetByIdAsync(int id)
+    {
+        var employee = await _employeeRepository.GetByIdWithDetailsAsync(id);
+        if (employee == null) return null;
+
+        return new EmployeeDto
+        {
+            Id = employee.Id,
+            DocumentNumber = employee.DocumentNumber,
+            DocumentType = employee.DocumentType,
+            FirstName = employee.FirstName,
+            MiddleName = employee.MiddleName,
+            LastName = employee.LastName,
+            SecondLastName = employee.SecondLastName,
+            FullName = employee.FullName,
+            DateOfBirth = employee.DateOfBirth,
+            Age = employee.Age,
+            Gender = employee.Gender,
+            PersonalEmail = employee.PersonalEmail,
+            CorporateEmail = employee.CorporateEmail,
+            PhoneNumber = employee.PhoneNumber,
+            AlternativePhoneNumber = employee.AlternativePhoneNumber,
+            Address = employee.Address,
+            City = employee.City,
+            Country = employee.Country,
+            HireDate = employee.HireDate,
+            TerminationDate = employee.TerminationDate,
+            Salary = employee.Salary,
+            Status = employee.Status,
+            StatusName = employee.Status.ToString(),
+            ProfessionalProfile = employee.ProfessionalProfile,
+            YearsOfService = employee.YearsOfService,
+            DepartmentId = employee.DepartmentId,
+            DepartmentName = employee.Department?.Name ?? string.Empty,
+            JobPositionId = employee.JobPositionId,
+            JobPositionTitle = employee.JobPosition?.Title ?? string.Empty,
+            CreatedAt = employee.CreatedAt,
+            UpdatedAt = employee.UpdatedAt,
+            IsActive = employee.IsActive
+        };
+    }
+
+    public async Task<EmployeeDto> CreateAsync(EmployeeCreateDto dto)
+    {
+        // Validar si ya existe documento o email
+        if (await _employeeRepository.DocumentNumberExistsAsync(dto.DocumentNumber))
+            throw new InvalidOperationException($"Ya existe un empleado con el documento {dto.DocumentNumber}");
+
+        if (await _employeeRepository.EmailExistsAsync(dto.PersonalEmail))
+            throw new InvalidOperationException($"Ya existe un empleado con el email {dto.PersonalEmail}");
+
+        var employee = new Employee
+        {
+            DocumentNumber = dto.DocumentNumber,
+            DocumentType = dto.DocumentType,
+            FirstName = dto.FirstName,
+            MiddleName = dto.MiddleName,
+            LastName = dto.LastName,
+            SecondLastName = dto.SecondLastName,
+            DateOfBirth = dto.DateOfBirth,
+            Gender = dto.Gender,
+            PersonalEmail = dto.PersonalEmail,
+            CorporateEmail = dto.CorporateEmail,
+            PhoneNumber = dto.PhoneNumber,
+            AlternativePhoneNumber = dto.AlternativePhoneNumber,
+            Address = dto.Address,
+            City = dto.City,
+            Country = dto.Country,
+            HireDate = dto.HireDate,
+            Salary = dto.Salary,
+            Status = dto.Status,
+            ProfessionalProfile = dto.ProfessionalProfile,
+            DepartmentId = dto.DepartmentId,
+            JobPositionId = dto.JobPositionId,
+            IsActive = true
+        };
+
+        await _employeeRepository.AddAsync(employee);
+        await _employeeRepository.SaveChangesAsync(); // Guardar cambios
+
+        // Retornar DTO con el ID generado
+        return await GetByIdAsync(employee.Id) ?? throw new InvalidOperationException("Error al crear empleado");
+    }
+
+    public async Task UpdateAsync(int id, EmployeeUpdateDto dto)
+    {
+        if (id != dto.Id)
+            throw new ArgumentException("El ID no coincide");
+
+        var employee = await _employeeRepository.GetByIdAsync(id);
+        if (employee == null)
+            throw new KeyNotFoundException($"No se encontró el empleado con ID {id}");
+
+        // Validar duplicados excluyendo el actual
+        if (await _employeeRepository.DocumentNumberExistsAsync(dto.DocumentNumber, id))
+            throw new InvalidOperationException($"Ya existe otro empleado con el documento {dto.DocumentNumber}");
+
+        if (await _employeeRepository.EmailExistsAsync(dto.PersonalEmail, id))
+            throw new InvalidOperationException($"Ya existe otro empleado con el email {dto.PersonalEmail}");
+
+        // Actualizar campos
+        employee.DocumentNumber = dto.DocumentNumber;
+        employee.DocumentType = dto.DocumentType;
+        employee.FirstName = dto.FirstName;
+        employee.MiddleName = dto.MiddleName;
+        employee.LastName = dto.LastName;
+        employee.SecondLastName = dto.SecondLastName;
+        employee.DateOfBirth = dto.DateOfBirth;
+        employee.Gender = dto.Gender;
+        employee.PersonalEmail = dto.PersonalEmail;
+        employee.CorporateEmail = dto.CorporateEmail;
+        employee.PhoneNumber = dto.PhoneNumber;
+        employee.AlternativePhoneNumber = dto.AlternativePhoneNumber;
+        employee.Address = dto.Address;
+        employee.City = dto.City;
+        employee.Country = dto.Country;
+        employee.HireDate = dto.HireDate;
+        employee.TerminationDate = dto.TerminationDate;
+        employee.Salary = dto.Salary;
+        employee.Status = dto.Status;
+        employee.ProfessionalProfile = dto.ProfessionalProfile;
+        employee.DepartmentId = dto.DepartmentId;
+        employee.JobPositionId = dto.JobPositionId;
+        employee.JobPositionId = dto.JobPositionId;
+        // No actualizar IsActive aquí para evitar soft-delete accidental si el DTO trae false por defecto
+        // employee.IsActive = dto.IsActive;
+
+        await _employeeRepository.UpdateAsync(employee);
+        await _employeeRepository.SaveChangesAsync(); // Guardar cambios
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var employee = await _employeeRepository.GetByIdAsync(id);
+        if (employee != null)
+        {
+            // Soft delete
+            employee.IsActive = false;
+            employee.Status = Domain.Enums.EmployeeStatus.Retirado;
+            employee.TerminationDate = DateTime.UtcNow;
+            await _employeeRepository.UpdateAsync(employee);
+            await _employeeRepository.SaveChangesAsync(); // Guardar cambios
+            Console.WriteLine($"✅ Empleado {id} eliminado (Soft Delete) y cambios guardados.");
+        }
+    }
+
+    public async Task<IEnumerable<EmployeeListDto>> SearchAsync(string searchTerm)
+    {
+        var employees = await _employeeRepository.SearchAsync(searchTerm);
+        
+        return employees.Select(e => new EmployeeListDto
+        {
+            Id = e.Id,
+            FullName = e.FullName,
+            DocumentNumber = e.DocumentNumber,
+            PersonalEmail = e.PersonalEmail,
+            CorporateEmail = e.CorporateEmail,
+            DepartmentName = e.Department?.Name ?? "Sin Departamento",
+            JobPositionTitle = e.JobPosition?.Title ?? "Sin Cargo",
+            Status = e.Status,
+            HireDate = e.HireDate
+        });
+    }
+
+    public async Task<bool> ExistsAsync(int id)
+    {
+        var employee = await _employeeRepository.GetByIdAsync(id);
+        return employee != null;
+    }
+
+    public async Task DeleteAllAsync()
+    {
+        await _employeeRepository.DeleteAllAsync();
+    }
+
+    public async Task<TalentoPlus.Application.DTOs.Dashboard.DashboardStatsDto> GetDashboardStatsAsync()
+    {
+        var stats = new TalentoPlus.Application.DTOs.Dashboard.DashboardStatsDto();
+
+        // Obtener conteos crudos
+        var countByDept = await _employeeRepository.GetEmployeeCountByDepartmentAsync();
+        var countByStatus = await _employeeRepository.GetEmployeeCountByStatusAsync();
+        
+        // Obtener departamentos para nombres
+        var departments = await _departmentRepository.GetAllAsync();
+        var deptMap = departments.ToDictionary(d => d.Id, d => d.Name);
+
+        // Mapear departamentos
+        foreach (var kvp in countByDept)
+        {
+            var deptName = deptMap.ContainsKey(kvp.Key) ? deptMap[kvp.Key] : "Sin Departamento";
+            stats.EmployeesByDepartment[deptName] = kvp.Value;
+        }
+
+        // Mapear estados
+        foreach (var kvp in countByStatus)
+        {
+            stats.EmployeesByStatus[kvp.Key.ToString()] = kvp.Value;
+        }
+
+        // Totales
+        stats.TotalEmployees = countByStatus.Values.Sum();
+        stats.ActiveEmployees = countByStatus.ContainsKey(Domain.Enums.EmployeeStatus.Activo) ? countByStatus[Domain.Enums.EmployeeStatus.Activo] : 0;
+        stats.InactiveEmployees = stats.TotalEmployees - stats.ActiveEmployees;
+
+        return stats;
+    }
+}

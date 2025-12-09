@@ -48,6 +48,8 @@ public interface IRepository<T> where T : BaseEntity
     /// </summary>
     Task<bool> ExistsAsync(int id);
 
+    void ClearChangeTracker();
+
     /// <summary>
     /// Guarda los cambios en la base de datos
     /// </summary>

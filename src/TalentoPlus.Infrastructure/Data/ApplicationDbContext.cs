@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TalentoPlus.Domain.Entities;
 using System.Reflection;
@@ -5,9 +6,9 @@ using System.Reflection;
 namespace TalentoPlus.Infrastructure.Data;
 
 /// <summary>
-/// Contexto de base de datos principal para TalentoPlus
+/// Contexto de base de datos principal para TalentoPlus con Identity
 /// </summary>
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

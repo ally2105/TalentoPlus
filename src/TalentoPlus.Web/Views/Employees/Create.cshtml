@@ -1,0 +1,38 @@
+@model TalentoPlus.Application.DTOs.Employees.EmployeeCreateDto
+
+@{
+    ViewData["Title"] = "Nuevo Empleado";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">Nuevo Empleado</h1>
+            <p class="text-muted mb-0">Registrar un nuevo colaborador en el sistema</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Volver
+        </a>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body p-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                
+                <partial name="_EmployeeForm" model="Model" />
+
+                <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+                    <button type="button" class="btn btn-light me-2" onclick="location.href='@Url.Action("Index")'">Cancelar</button>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-save me-2"></i>Guardar Empleado
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
