@@ -5,33 +5,33 @@ using TalentoPlus.Domain.Entities;
 namespace TalentoPlus.Infrastructure.Data;
 
 /// <summary>
-/// Clase para sembrar datos iniciales en la base de datos
+/// Class to seed initial data into the database
 /// </summary>
 public static class DbSeeder
 {
     /// <summary>
-    /// Semilla los roles y el usuario administrador inicial
+    /// Seeds roles and the initial admin user
     /// </summary>
     public static async Task SeedAsync(
         ApplicationDbContext context,
         UserManager<ApplicationUser> userManager,
         RoleManager<IdentityRole> roleManager)
     {
-        // Asegurar que la base de datos está creada
+        // Ensure the database is created
         await context.Database.MigrateAsync();
 
-        // Sembrar roles
+        // Seed roles
         await SeedRolesAsync(roleManager);
 
-        // Sembrar usuario administrador
+        // Seed admin user
         await SeedAdminUserAsync(userManager);
 
-        // Sembrar departamentos y cargos
+        // Seed departments and job positions
         await SeedDepartmentsAndPositionsAsync(context);
     }
 
     /// <summary>
-    /// Crea los roles del sistema
+    /// Creates system roles
     /// </summary>
     private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
     {
@@ -43,13 +43,13 @@ public static class DbSeeder
             {
                 var role = new IdentityRole(roleName);
                 await roleManager.CreateAsync(role);
-                Console.WriteLine($"✅ Rol '{roleName}' creado exitosamente");
+                Console.WriteLine($"✅ Role '{roleName}' created successfully");
             }
         }
     }
 
     /// <summary>
-    /// Crea el usuario administrador inicial
+    /// Creates the initial admin user
     /// </summary>
     private static async Task SeedAdminUserAsync(UserManager<ApplicationUser> userManager)
     {
@@ -75,13 +75,13 @@ public static class DbSeeder
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(adminUser, "Administrador");
-                Console.WriteLine($"✅ Usuario administrador creado exitosamente");
+                Console.WriteLine($"✅ Admin user created successfully");
                 Console.WriteLine($"   📧 Email: {adminEmail}");
                 Console.WriteLine($"   🔑 Password: {adminPassword}");
             }
             else
             {
-                Console.WriteLine($"❌ Error al crear usuario administrador:");
+                Console.WriteLine($"❌ Error creating admin user:");
                 foreach (var error in result.Errors)
                 {
                     Console.WriteLine($"   • {error.Description}");
@@ -90,18 +90,18 @@ public static class DbSeeder
         }
         else
         {
-            Console.WriteLine($"ℹ️  Usuario administrador ya existe: {adminEmail}");
+            Console.WriteLine($"ℹ️  Admin user already exists: {adminEmail}");
         }
     }
 
     /// <summary>
-    /// Crea departamentos y cargos iniciales
+    /// Creates initial departments and job positions
     /// </summary>
     private static async Task SeedDepartmentsAndPositionsAsync(ApplicationDbContext context)
     {
         if (await context.Departments.AnyAsync())
         {
-            Console.WriteLine("ℹ️  Departamentos ya existen, omitiendo seed.");
+            Console.WriteLine("ℹ️  Departments already exist, skipping seed.");
             return;
         }
 
@@ -118,13 +118,13 @@ public static class DbSeeder
 
         await context.Departments.AddRangeAsync(departments);
         await context.SaveChangesAsync();
-        Console.WriteLine($"✅ {departments.Count} Departamentos creados exitosamente");
+        Console.WriteLine($"✅ {departments.Count} Departments created successfully");
 
-        // Crear cargos asociados
+        // Create associated job positions
         var positions = new List<JobPosition>();
         var random = new Random();
 
-        // Mapa de cargos por departamento
+        // Map of positions by department
         var positionsMap = new Dictionary<string, string[]>
         {
             { "Recursos Humanos", new[] { "Analista de Selección", "Gerente de RRHH", "Especialista en Nómina", "Psicólogo Organizacional" } },
@@ -157,6 +157,6 @@ public static class DbSeeder
 
         await context.JobPositions.AddRangeAsync(positions);
         await context.SaveChangesAsync();
-        Console.WriteLine($"✅ {positions.Count} Cargos creados exitosamente");
+        Console.WriteLine($"✅ {positions.Count} Job Positions created successfully");
     }
 }

@@ -23,6 +23,10 @@ public class ExcelService : IExcelService
         _jobPositionRepository = jobPositionRepository;
     }
 
+    /// <summary>
+    /// Imports employees in bulk from an Excel file.
+    /// Automatically creates departments and job positions if they do not exist.
+    /// </summary>
     public async Task<ImportResultDto> ImportEmployeesAsync(Stream fileStream)
     {
         var result = new ImportResultDto();
@@ -41,7 +45,6 @@ public class ExcelService : IExcelService
                 return result;
             }
 
-            // 1. Buscar la fila de encabezados (puede no ser la primera)
             IXLRangeRow headerRow = null;
             foreach (var row in rows.Take(10)) // Buscar en las primeras 10 filas
             {
@@ -55,20 +58,18 @@ public class ExcelService : IExcelService
 
             if (headerRow == null)
             {
-                // Fallback: usar la primera fila si no se encuentra "Email"
+                // Fallback: use the first row if "Email" is not found
                 headerRow = rows.First();
             }
 
             var map = MapColumns(headerRow);
             
-            // Validar columna crítica
             if (!map.ContainsKey("Email")) 
             {
                 result.Errors.Add("No se encontró una columna de 'Email' o 'Correo' en la cabecera.");
                 return result;
             }
 
-            // 2. Procesar filas de datos (empezar después de la cabecera)
             var dataRows = rows.Where(r => r.RowNumber() > headerRow.RowNumber());
 
             foreach (var row in dataRows)
@@ -95,7 +96,6 @@ public class ExcelService : IExcelService
                         continue;
                     }
 
-                    // Validar duplicados (si tenemos documento)
                     if (!string.IsNullOrEmpty(docNumber) && await _employeeRepository.DocumentNumberExistsAsync(docNumber))
                     {
                         result.FailedImports++;
@@ -110,14 +110,13 @@ public class ExcelService : IExcelService
                         continue;
                     }
 
-                    // Buscar o Crear Departamento
                     var deptName = GetVal("Department");
                     if (string.IsNullOrWhiteSpace(deptName)) deptName = "General";
 
                     var department = departments.FirstOrDefault(d => d.Name.Equals(deptName, StringComparison.OrdinalIgnoreCase));
                     if (department == null)
                     {
-                        // Generar código único: 3 primeras letras mayúsculas + random
+                        // Generate unique code: first 3 uppercase letters + random
                         var codePrefix = deptName.Length >= 3 ? deptName.Substring(0, 3).ToUpper() : deptName.ToUpper();
                         var deptCode = $"{codePrefix}-{new Random().Next(100, 999)}";
 
@@ -133,7 +132,6 @@ public class ExcelService : IExcelService
                         departments = (await _departmentRepository.GetAllAsync()).ToList();
                     }
 
-                    // Buscar o Crear Cargo
                     var jobTitle = GetVal("JobPosition");
                     if (string.IsNullOrWhiteSpace(jobTitle)) jobTitle = "Empleado General";
 
@@ -154,7 +152,6 @@ public class ExcelService : IExcelService
                         jobPositions = (await _jobPositionRepository.GetAllAsync()).ToList();
                     }
 
-                    // Crear empleado
                     var employee = new Employee
                     {
                         DocumentType = GetVal("DocumentType") == "" ? "CC" : GetVal("DocumentType"),
@@ -180,7 +177,7 @@ public class ExcelService : IExcelService
                 }
                 catch (Exception ex)
                 {
-                    // CRÍTICO: Limpiar el contexto para que el error no contamine la siguiente iteración
+                    // CRITICAL: Clear the context so the error doesn't contaminate the next iteration
                     _employeeRepository.ClearChangeTracker();
 
                     result.FailedImports++;
@@ -197,7 +194,7 @@ public class ExcelService : IExcelService
         return result;
     }
 
-    // Método auxiliar para detectar columnas por nombres comunes
+    // Helper method to detect columns by common names
     private Dictionary<string, int> MapColumns(IXLRangeRow headerRow)
     {
         var mapping = new Dictionary<string, int>();
@@ -212,7 +209,7 @@ public class ExcelService : IExcelService
             if (IsMatch(header, "nombre", "nombres", "first name")) mapping["FirstName"] = colIndex;
             else if (IsMatch(header, "apellido", "apellidos", "last name")) mapping["LastName"] = colIndex;
             else if (IsMatch(header, "tipo", "doc type")) mapping["DocumentType"] = colIndex;
-            // "id" solo si es palabra exacta o está acompañada de "doc" o "num"
+            // "id" only if it is an exact word or accompanied by "doc" or "num"
             else if (IsMatch(header, "número", "numero", "num", "cédula", "cedula", "documento", "document number") || header == "id") mapping["DocumentNumber"] = colIndex;
             else if (IsMatch(header, "email", "correo", "mail")) mapping["Email"] = colIndex;
             else if (IsMatch(header, "departamento", "department", "área", "area")) mapping["Department"] = colIndex;

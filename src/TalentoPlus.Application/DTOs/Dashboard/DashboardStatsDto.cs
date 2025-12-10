@@ -6,6 +6,7 @@ public class DashboardStatsDto
 {
     public int TotalEmployees { get; set; }
     public int ActiveEmployees { get; set; }
+    public int EmployeesOnVacation { get; set; }
     public int InactiveEmployees { get; set; } // Retirados, etc.
     public Dictionary<string, int> EmployeesByDepartment { get; set; } = new();
     public Dictionary<string, int> EmployeesByStatus { get; set; } = new();

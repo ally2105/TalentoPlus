@@ -1,47 +1,47 @@
-# TalentoPlus S.A.S. - Sistema de Gestión de Empleados
+# TalentoPlus S.A.S. - Employee Management System
 
-## 📋 Descripción del Proyecto
+## 📋 Project Description
 
-TalentoPlus es un sistema completo de gestión de empleados desarrollado con **ASP.NET Core** y **PostgreSQL**. El sistema consta de:
-- **Aplicación Web (MVC)**: Para administradores de RRHH
-- **API REST**: Para consultas de empleados con autenticación JWT
-- **Dashboard con IA**: Consultas en lenguaje natural
-- **Generación de PDFs**: Hojas de vida de empleados
-- **Importación Excel**: Carga masiva de empleados
+TalentoPlus is a complete employee management system developed with **ASP.NET Core** and **PostgreSQL**. The system consists of:
+- **Web Application (MVC)**: For HR administrators
+- **REST API**: For employee queries with JWT authentication
+- **AI Dashboard**: Natural language queries
+- **PDF Generation**: Employee resumes
+- **Excel Import**: Bulk employee upload
 
-## 🏗️ Arquitectura del Proyecto
+## 🏗️ Project Architecture
 
-El proyecto sigue una **arquitectura por capas** con principios de **Clean Architecture**:
+The project follows a **layered architecture** with **Clean Architecture** principles:
 
 ```
 /TalentoPlus
 │
-├── TalentoPlus.Domain            # 🔵 Capa de Dominio
-│   ├── Entities/                 # Entidades de negocio
-│   ├── Enums/                    # Enumeraciones
-│   └── Interfaces/               # Interfaces de dominio
+├── TalentoPlus.Domain            # 🔵 Domain Layer
+│   ├── Entities/                 # Business entities
+│   ├── Enums/                    # Enumerations
+│   └── Interfaces/               # Domain interfaces
 │
-├── TalentoPlus.Application       # 🟢 Capa de Aplicación
+├── TalentoPlus.Application       # 🟢 Application Layer
 │   ├── DTOs/                     # Data Transfer Objects
-│   ├── Interfaces/               # Interfaces de servicios
-│   └── UseCases/                 # Casos de uso
+│   ├── Interfaces/               # Service interfaces
+│   └── UseCases/                 # Use cases
 │
-├── TalentoPlus.Infrastructure    # 🟡 Capa de Infraestructura
+├── TalentoPlus.Infrastructure    # 🟡 Infrastructure Layer
 │   ├── Data/                     # EF Core DbContext
-│   ├── Repositories/             # Implementación de repositorios
-│   ├── Services/                 # Servicios (PDF, Excel, Email, IA)
-│   └── Migrations/               # Migraciones de BD
+│   ├── Repositories/             # Repository implementation
+│   ├── Services/                 # Services (PDF, Excel, Email, AI)
+│   └── Migrations/               # DB Migrations
 │
-├── TalentoPlus.Web               # 🔴 Aplicación Web (Admin)
-│   ├── Controllers/              # Controladores MVC
-│   ├── Views/                    # Vistas Razor
-│   └── wwwroot/                  # Archivos estáticos
+├── TalentoPlus.Web               # 🔴 Web Application (Admin)
+│   ├── Controllers/              # MVC Controllers
+│   ├── Views/                    # Razor Views
+│   └── wwwroot/                  # Static files
 │
-└── TalentoPlus.Api               # 🟣 API REST (Empleados)
-    └── Controllers/              # Controladores API
+└── TalentoPlus.Api               # 🟣 REST API (Employees)
+    └── Controllers/              # API Controllers
 ```
 
-### 📊 Dependencias entre Capas
+### 📊 Layer Dependencies
 
 ```
 Presentation (Web/Api) ──→ Application ──→ Domain
@@ -51,23 +51,23 @@ Presentation (Web/Api) ──→ Application ──→ Domain
      Infrastructure ──→ Domain
 ```
 
-**Regla de Oro**: `Domain` no depende de nadie. Es el núcleo puro del negocio.
+**Golden Rule**: `Domain` depends on no one. It is the pure core of the business.
 
-## 📦 Paquetes NuGet Instalados
+## 📦 Installed NuGet Packages
 
 ### TalentoPlus.Domain
 - `Microsoft.AspNetCore.Identity.EntityFrameworkCore` (8.0.*)
 
 ### TalentoPlus.Application
-- Ninguna dependencia externa (solo Domain)
+- No external dependencies (only Domain)
 
 ### TalentoPlus.Infrastructure
 - `Microsoft.EntityFrameworkCore` (8.0.*)
 - `Microsoft.EntityFrameworkCore.Design` (8.0.*)
 - `Npgsql.EntityFrameworkCore.PostgreSQL` (8.0.*)
 - `Microsoft.AspNetCore.Identity.EntityFrameworkCore` (8.0.*)
-- `QuestPDF` (2025.7.4) - Generación de PDFs
-- `ClosedXML` (0.105.0) - Lectura de archivos Excel
+- `QuestPDF` (2025.7.4) - PDF Generation
+- `ClosedXML` (0.105.0) - Excel file reading
 
 ### TalentoPlus.Web
 - `Microsoft.AspNetCore.Identity.EntityFrameworkCore` (8.0.*)
@@ -79,117 +79,84 @@ Presentation (Web/Api) ──→ Application ──→ Domain
 - `Microsoft.AspNetCore.OpenApi` (8.0.21)
 - `Swashbuckle.AspNetCore` (6.6.2)
 
-## 🔧 Configuración Técnica
+## 🔧 Technical Configuration
 
 ### Framework
 - **.NET 8.0** (LTS)
 - **ASP.NET Core 8.0**
 
-### Base de Datos
+### Database
 - **PostgreSQL** (via Npgsql.EntityFrameworkCore.PostgreSQL)
 
-### Autenticación
-- **ASP.NET Core Identity** (para administradores en Web)
-- **JWT Bearer Tokens** (para empleados en API)
+### Authentication
+- **ASP.NET Core Identity** (for Web administrators)
+- **JWT Bearer Tokens** (for API employees)
 
-## 🚀 Comandos Útiles
+## 🚀 Useful Commands
 
-### Restaurar dependencias
+### Restore dependencies
 ```bash
 dotnet restore
 ```
 
-### Compilar solución
+### Build solution
 ```bash
 dotnet build
 ```
 
-### Ejecutar aplicación web
+### Run web application
 ```bash
 dotnet run --project src/TalentoPlus.Web/TalentoPlus.Web.csproj
 ```
 
-### Ejecutar API
+### Run API
 ```bash
 dotnet run --project src/TalentoPlus.Api/TalentoPlus.Api.csproj
 ```
 
-### Crear migración
+### Create migration
 ```bash
 dotnet ef migrations add InitialCreate --project src/TalentoPlus.Infrastructure --startup-project src/TalentoPlus.Web
 ```
 
-### Aplicar migraciones
+### Apply migrations
 ```bash
 dotnet ef database update --project src/TalentoPlus.Infrastructure --startup-project src/TalentoPlus.Web
 ```
 
-## 🐳 Ejecución con Docker
+## 🐳 Docker Execution
 
-El proyecto está completamente dockerizado. Para ejecutarlo:
+The project is fully dockerized. To run it:
 
-1.  Copia el archivo de ejemplo de variables de entorno:
+1.  Copy the environment variables example file:
     ```bash
     cp .env.example .env
     ```
-2.  Edita el archivo `.env` con tus credenciales reales (Base de datos, API Key de Gemini, JWT Secret).
-3.  Ejecuta docker-compose:
+2.  Edit the `.env` file with your real credentials (Database, Gemini API Key, JWT Secret).
+3.  Run docker-compose:
     ```bash
     docker-compose up --build
     ```
 
-Esto levantará:
+This will launch:
 *   **Web App**: http://localhost:5000
 *   **API**: http://localhost:5001
 
-## 🧪 Ejecución de Pruebas
+> **Note on Emails**: The project is configured to use **Gmail** as the SMTP server. Credentials are pre-configured in the `docker-compose.yml` file for the development environment. Ensure your Google "App Password" is still valid if you experience delivery issues.
 
-Para ejecutar las pruebas unitarias y de integración:
+## 🧪 Running Tests
+
+To run unit and integration tests:
 
 ```bash
 dotnet test src/TalentoPlus.Tests/TalentoPlus.Tests.csproj
 ```
 
-## 📝 Estado Actual del Proyecto
+## 📞 Contact
 
-### ✅ FASE 1 — Preparación
-**US-01 - Crear arquitectura por capas** - ✔️ COMPLETADO
-
-### ✅ FASE 2 — Dominio + Infraestructura base
-**US-02 - Modelar entidades del dominio** - ✔️ COMPLETADO
-**US-03 - Configurar EF Core + PostgreSQL** - ✔️ COMPLETADO
-
-### ✅ FASE 3 — Funcionalidades Core (Web)
-**US-04 - Configurar Identity** - ✔️ COMPLETADO
-**US-05 - CRUD Empleados** - ✔️ COMPLETADO
-**US-06 - Importación Excel** - ✔️ COMPLETADO
-**US-07 - Generación PDF** - ✔️ COMPLETADO
-
-### ✅ FASE 4 — Dashboard + IA
-**US-08 - Dashboard Estadísticas** - ✔️ COMPLETADO
-**US-09 - Chatbot IA (Gemini)** - ✔️ COMPLETADO
-
-### ✅ FASE 5 — API REST
-**US-10 - Listar Departamentos** - ✔️ COMPLETADO
-**US-11 - Registro Empleados + Email** - ✔️ COMPLETADO
-**US-12 - Login JWT** - ✔️ COMPLETADO
-**US-13 - Perfil Usuario** - ✔️ COMPLETADO
-**US-14 - Descargar PDF (API)** - ✔️ COMPLETADO
-
-### ✅ FASE 6 — Pruebas
-**US-15 - Pruebas Unitarias** - ✔️ COMPLETADO
-**US-16 - Pruebas de Integración** - ✔️ COMPLETADO
-
-### ✅ FASE 7 — Deploy + Docker
-**US-17 - Configurar Docker** - ✔️ COMPLETADO
-**US-18 - Documentación Final** - ✔️ COMPLETADO
-
-## 📞 Contacto
-
-Proyecto desarrollado para **TalentoPlus S.A.S.**  
-Modernización del área de Recursos Humanos
+Project developed for **TalentoPlus S.A.S.**
+Modernization of the Human Resources area
 
 ---
 
-**Última actualización**: Proyecto Finalizado y Listo para Despliegue 🚀
-
+**Last update**: Project Finalized and Ready for Deployment 🚀

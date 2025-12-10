@@ -18,11 +18,13 @@ public class EmployeeService : IEmployeeService
         _emailService = emailService;
     }
 
+    /// <summary>
+    /// Retrieves all employees registered in the system.
+    /// </summary>
     public async Task<IEnumerable<EmployeeListDto>> GetAllAsync()
     {
         var employees = await _employeeRepository.GetAllAsync();
         
-        // Mapeo manual (idealmente usar AutoMapper)
         return employees.Select(e => new EmployeeListDto
         {
             Id = e.Id,
@@ -79,9 +81,11 @@ public class EmployeeService : IEmployeeService
         };
     }
 
+    /// <summary>
+    /// Creates a new employee validating document and email duplicates.
+    /// </summary>
     public async Task<EmployeeDto> CreateAsync(EmployeeCreateDto dto)
     {
-        // Validar si ya existe documento o email
         if (await _employeeRepository.DocumentNumberExistsAsync(dto.DocumentNumber))
             throw new InvalidOperationException($"Ya existe un empleado con el documento {dto.DocumentNumber}");
 
@@ -121,6 +125,9 @@ public class EmployeeService : IEmployeeService
         return await GetByIdAsync(employee.Id) ?? throw new InvalidOperationException("Error al crear empleado");
     }
 
+    /// <summary>
+    /// Updates an existing employee's information.
+    /// </summary>
     public async Task UpdateAsync(int id, EmployeeUpdateDto dto)
     {
         if (id != dto.Id)
@@ -130,7 +137,6 @@ public class EmployeeService : IEmployeeService
         if (employee == null)
             throw new KeyNotFoundException($"No se encontró el empleado con ID {id}");
 
-        // Validar duplicados excluyendo el actual
         if (await _employeeRepository.DocumentNumberExistsAsync(dto.DocumentNumber, id))
             throw new InvalidOperationException($"Ya existe otro empleado con el documento {dto.DocumentNumber}");
 
@@ -161,19 +167,19 @@ public class EmployeeService : IEmployeeService
         employee.DepartmentId = dto.DepartmentId;
         employee.JobPositionId = dto.JobPositionId;
         employee.JobPositionId = dto.JobPositionId;
-        // No actualizar IsActive aquí para evitar soft-delete accidental si el DTO trae false por defecto
-        // employee.IsActive = dto.IsActive;
 
         await _employeeRepository.UpdateAsync(employee);
         await _employeeRepository.SaveChangesAsync(); // Guardar cambios
     }
 
+    /// <summary>
+    /// Performs a logical deletion (Soft Delete) of the employee.
+    /// </summary>
     public async Task DeleteAsync(int id)
     {
         var employee = await _employeeRepository.GetByIdAsync(id);
         if (employee != null)
         {
-            // Soft delete
             employee.IsActive = false;
             employee.Status = Domain.Enums.EmployeeStatus.Retirado;
             employee.TerminationDate = DateTime.UtcNow;
@@ -212,11 +218,12 @@ public class EmployeeService : IEmployeeService
         await _employeeRepository.DeleteAllAsync();
     }
 
+    /// <summary>
+    /// Calculates key statistics for the administrative Dashboard.
+    /// </summary>
     public async Task<TalentoPlus.Application.DTOs.Dashboard.DashboardStatsDto> GetDashboardStatsAsync()
     {
         var stats = new TalentoPlus.Application.DTOs.Dashboard.DashboardStatsDto();
-
-        // Obtener conteos crudos
         var countByDept = await _employeeRepository.GetEmployeeCountByDepartmentAsync();
         var countByStatus = await _employeeRepository.GetEmployeeCountByStatusAsync();
         
@@ -240,14 +247,19 @@ public class EmployeeService : IEmployeeService
         // Totales
         stats.TotalEmployees = countByStatus.Values.Sum();
         stats.ActiveEmployees = countByStatus.ContainsKey(Domain.Enums.EmployeeStatus.Activo) ? countByStatus[Domain.Enums.EmployeeStatus.Activo] : 0;
-        stats.InactiveEmployees = stats.TotalEmployees - stats.ActiveEmployees;
+        stats.EmployeesOnVacation = countByStatus.ContainsKey(Domain.Enums.EmployeeStatus.Vacaciones) ? countByStatus[Domain.Enums.EmployeeStatus.Vacaciones] : 0;
+        
+        // Inactivos son todos los que no están Activos ni en Vacaciones
+        stats.InactiveEmployees = stats.TotalEmployees - stats.ActiveEmployees - stats.EmployeesOnVacation;
 
         return stats;
     }
 
+    /// <summary>
+    /// Registers an employee from the public API and sends a welcome email.
+    /// </summary>
     public async Task RegisterAsync(TalentoPlus.Application.DTOs.Auth.EmployeeRegisterRequest request)
     {
-        // Validaciones
         if (await _employeeRepository.DocumentNumberExistsAsync(request.DocumentNumber))
             throw new InvalidOperationException($"Ya existe un empleado con el documento {request.DocumentNumber}");
 

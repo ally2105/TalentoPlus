@@ -12,7 +12,7 @@ using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar DbContext con PostgreSQL
+// Configure DbContext with PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -24,13 +24,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     )
 );
 
-// Registrar repositorios
+// Register repositories
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IJobPositionRepository, JobPositionRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-// Registrar servicios de aplicación
+// Register application services
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IExcelService, ExcelService>();
 builder.Services.AddScoped<IPdfService, PdfService>();
@@ -38,23 +38,23 @@ builder.Services.AddScoped<IAIService, GeminiService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddHttpClient();
 
-// Registrar validadores
+// Register validators
 builder.Services.AddValidatorsFromAssemblyContaining<EmployeeCreateDtoValidator>();
 
-// Configurar Identity
+// Configure Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    // Configuración de contraseñas
+    // Password settings
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 8;
 
-    // Configuración de usuario
+    // User settings
     options.User.RequireUniqueEmail = true;
 
-    // Configuración de bloqueo de cuenta
+    // Lockout settings
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
@@ -62,7 +62,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// Configurar cookies de autenticación
+// Configure authentication cookies
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -79,7 +79,7 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Sembrar datos iniciales (roles y usuario admin)
+// Seed initial data (roles and admin user)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

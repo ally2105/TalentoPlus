@@ -55,13 +55,13 @@ public class EmployeesController : Controller
             employees = await _employeeService.GetAllAsync();
         }
 
-        // Crear lista paginada
+        // Create paginated list
         var paginatedEmployees = Models.PaginatedList<EmployeeListDto>.Create(
             employees, 
             pageNumber, 
             pageSize);
 
-        // Pasar información de paginación a la vista
+        // Pass pagination info to the view
         ViewData["CurrentPage"] = pageNumber;
         ViewData["PageSize"] = pageSize;
         ViewData["TotalPages"] = paginatedEmployees.TotalPages;

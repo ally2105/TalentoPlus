@@ -27,9 +27,11 @@ public class GeminiService : IAIService
         _httpClient = httpClient;
     }
 
+    /// <summary>
+    /// Processes a natural language question and returns a data-driven answer.
+    /// </summary>
     public async Task<AIResponseDto> ProcessQuestionAsync(string question)
     {
-        // 1. Obtener Intención (Ya sea por Gemini o Local)
         var intent = await GetIntentFromQuestionAsync(question);
 
         if (intent == null)
@@ -37,7 +39,6 @@ public class GeminiService : IAIService
             return new AIResponseDto { Success = false, Answer = "No pude entender tu pregunta. Intenta preguntar sobre 'cuántos empleados hay', 'promedio de salarios', o 'lista de empleados en IT'." };
         }
 
-        // 2. Ejecutar Consulta Real en Base de Datos
         return await ExecuteQueryAsync(intent);
     }
 
@@ -63,7 +64,7 @@ public class GeminiService : IAIService
         var q = question.ToLower();
         var intent = new AIIntentDto();
 
-        // 1. Detectar Tipo de Consulta
+        // 1. Detect Query Type
         if (q.Contains("mayor salario") || q.Contains("gana mas") || q.Contains("sueldo mas alto") || q.Contains("mejor pagado"))
         {
             intent.QueryType = "max";
@@ -105,24 +106,24 @@ public class GeminiService : IAIService
             intent.Explanation = "Contar empleados (por defecto)";
         }
 
-        // 2. Detectar Filtros
+        // 2. Detect Filters
         
-        // Estado
+        // Status
         if (q.Contains("activo")) intent.Filters.Status = "Activo";
         if (q.Contains("inactivo") || q.Contains("retirado")) intent.Filters.Status = "Retirado";
         
-        // Género
+        // Gender
         if (q.Contains("mujer") || q.Contains("femenino") || q.Contains("chicas")) intent.Filters.Gender = "Femenino";
         if (q.Contains("hombre") || q.Contains("masculino") || q.Contains("chicos")) intent.Filters.Gender = "Masculino";
 
-        // Temporales
+        // Temporal
         if (q.Contains("nuevo") || q.Contains("reciente") || q.Contains("ingresaron") || q.Contains("ultimo mes")) 
             intent.Filters.IsRecent = true;
             
         if (q.Contains("cumple") || q.Contains("cumpleaños") || q.Contains("santo")) 
             intent.Filters.IsBirthdayMonth = true;
 
-        // Departamentos (Simulación simple)
+        // Departments (Simple simulation)
         if (q.Contains("sistemas") || q.Contains("ti") || q.Contains("tecnologia")) intent.Filters.Department = "Tecnología";
         if (q.Contains("rrhh") || q.Contains("humanos")) intent.Filters.Department = "Recursos Humanos";
         if (q.Contains("ventas") || q.Contains("comercial")) intent.Filters.Department = "Ventas";
@@ -137,20 +138,20 @@ public class GeminiService : IAIService
     {
         var response = new AIResponseDto();
         
-        // Obtener empleados (base)
+        // Get employees (base)
         var employees = await _employeeRepository.GetAllAsync();
 
-        // --- APLICAR FILTROS EN MEMORIA ---
+        // --- APPLY IN-MEMORY FILTERS ---
 
-        // Departamento
+        // Department
         if (!string.IsNullOrEmpty(intent.Filters.Department))
         {
             employees = employees.Where(e => e.Department != null && 
                 e.Department.Name.Contains(intent.Filters.Department, StringComparison.OrdinalIgnoreCase));
         }
 
-        // Estado (Nota: GetAllAsync ya trae activos por defecto en el repo modificado, 
-        // pero si tuviéramos acceso a todos, aquí filtraríamos)
+        // Status (Note: GetAllAsync already fetches active ones by default in the modified repo, 
+        // but if we had access to all, we would filter here)
         if (!string.IsNullOrEmpty(intent.Filters.Status))
         {
             if (intent.Filters.Status == "Retirado")
@@ -159,27 +160,27 @@ public class GeminiService : IAIService
             }
         }
 
-        // Género
+        // Gender
         if (!string.IsNullOrEmpty(intent.Filters.Gender))
         {
             employees = employees.Where(e => !string.IsNullOrEmpty(e.Gender) && e.Gender.Equals(intent.Filters.Gender, StringComparison.OrdinalIgnoreCase));
         }
 
-        // Recientes (últimos 30 días)
+        // Recent (last 30 days)
         if (intent.Filters.IsRecent)
         {
             var limitDate = DateTime.Now.AddDays(-30);
             employees = employees.Where(e => e.HireDate >= limitDate);
         }
 
-        // Cumpleaños (este mes)
+        // Birthday (this month)
         if (intent.Filters.IsBirthdayMonth)
         {
             var currentMonth = DateTime.Now.Month;
             employees = employees.Where(e => e.DateOfBirth.Month == currentMonth);
         }
 
-        // --- EJECUTAR ACCIÓN ---
+        // --- EXECUTE ACTION ---
 
         if (!employees.Any())
         {

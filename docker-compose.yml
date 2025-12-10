@@ -12,6 +12,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
       - Gemini__ApiKey=${GEMINI_API_KEY}
+      - Smtp__Server=smtp.gmail.com
+      - Smtp__Port=587
+      - Smtp__Username=allisonpauleth13@gmail.com
+      - Smtp__Password=jlrg pyew ycxc ubrw
+      - Smtp__UseSsl=true
     depends_on:
       - api
 
@@ -29,5 +34,10 @@ services:
       - Jwt__Key=${JWT_SECRET}
       - Jwt__Issuer=TalentoPlusApi
       - Jwt__Audience=TalentoPlusUsers
+      - Smtp__Server=smtp.gmail.com
+      - Smtp__Port=587
+      - Smtp__Username=allisonpauleth13@gmail.com
+      - Smtp__Password=jlrg pyew ycxc ubrw
+      - Smtp__UseSsl=true
 
 # Nota: DB_CONNECTION_STRING, GEMINI_API_KEY y JWT_SECRET deben estar en un archivo .env
