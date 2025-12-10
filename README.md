@@ -133,10 +133,20 @@ The project is fully dockerized. To run it:
     cp .env.example .env
     ```
 2.  Edit the `.env` file with your real credentials (Database, Gemini API Key, JWT Secret).
-3.  Run docker-compose:
+3.  Run Docker Compose:
     ```bash
-    docker-compose up --build
+    docker compose up --build
     ```
+
+To stop the services:
+```bash
+docker compose down
+```
+
+To view logs:
+```bash
+docker compose logs -f
+```
 
 This will launch:
 *   **Web App**: http://localhost:5000
